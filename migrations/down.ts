@@ -1,6 +1,6 @@
 import { sql } from "bun";
 
-const drop = sql`DROP TABLE IF EXISTS bed_rows`;
+const drop = sql`DROP TABLE IF EXISTS rows`;
 
 try {
   await drop;
