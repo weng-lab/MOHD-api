@@ -1,9 +1,22 @@
-import { Hono } from 'hono'
+import { sql } from "bun";
+import { Hono } from "hono";
 
-const app = new Hono()
+const app = new Hono();
 
-app.get('/', (c) => {
-  return c.text('Hello Hono!')
-})
+app.get("/", async (c) => {
+  return c.text("yo");
+});
 
-export default app
+app.get("/health", async (c) => {
+  try {
+    await sql`
+      SELECT 1
+    `;
+    return c.text("ok");
+  } catch (e) {
+    c.status(500);
+    return c.text("failed to connect to database");
+  }
+});
+
+export default app;

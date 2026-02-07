@@ -3,7 +3,9 @@
   "scripts": {
     "dev": "bun run --hot src/index.ts",
     "build": "bun build ./src/index.ts --target=bun --outdir=./dist",
-    "start": "bun dist/index.js"
+    "start": "bun dist/index.js",
+    "db:up": "bun migrations/up.ts",
+    "db:down": "bun migrations/down.ts"
   },
   "dependencies": {
     "hono": "^4.11.8"
