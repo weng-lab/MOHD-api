@@ -4,23 +4,31 @@ import { Hono } from "hono";
 import { logger } from "hono/logger";
 import * as z from "zod";
 
+// create an instance of hono
 const app = new Hono();
 
+// use the logger middleware
 app.use(logger());
 
+// zod object to validate against
 const genomicRange = z.object({
   chrom: z.string(),
-  start: z.coerce.number(),
+  start: z.coerce.number(), // cast (coerce) from string to number
   end: z.coerce.number(),
 });
 
+// another zod object, extends genomic range
 const bedGraphRow = genomicRange.extend({
   value: z.coerce.number(),
 });
 
+// get method /rows
+// use zValidator to validate the query of the request aginst the genomicRange
 app.get("/rows", zValidator("query", genomicRange), async (c) => {
+  // get the query params that are valid (type safe)
   const { chrom, start, end } = c.req.valid("query");
 
+  // execute SQL and save output into rows
   const rows = await sql`
       SELECT * from rows
       WHERE chrom = ${chrom}
@@ -47,6 +55,7 @@ app.get("/health", async (c) => {
   return c.text("ok");
 });
 
+// handle all errors and just output a generic message and status
 app.onError((err, c) => {
   console.log(`${err}`);
   return c.text("an error occurred", 500);
