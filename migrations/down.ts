@@ -1,9 +1,7 @@
 import { sql } from "bun";
 
-const drop = sql`DROP TABLE IF EXISTS rows`;
-
 try {
-  await drop;
+  await sql`DROP TABLE IF EXISTS rows`;
   console.log("dropped table");
 } catch (e) {
   console.log(e);
