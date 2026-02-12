@@ -6,7 +6,7 @@ import { bedGraphRow, genomicRange } from "../types";
 const rows = new Hono();
 
 // use zValidator to validate the query of the request aginst the genomicRange
-rows.get("/rows", zValidator("query", genomicRange), async (c) => {
+rows.get("/", zValidator("query", genomicRange), async (c) => {
   // get the query params that are valid (type safe)
   const { chrom, start, end } = c.req.valid("query");
 
@@ -21,7 +21,7 @@ rows.get("/rows", zValidator("query", genomicRange), async (c) => {
   return c.json(rows);
 });
 
-rows.post("/rows", zValidator("json", bedGraphRow), async (c) => {
+rows.post("/", zValidator("json", bedGraphRow), async (c) => {
   const { chrom, start, end, value } = c.req.valid("json");
 
   await sql`
