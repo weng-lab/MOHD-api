@@ -1,5 +1,5 @@
 import type { RootResolver } from "@hono/graphql-server";
-import { sql } from "bun";
+import { sql } from "../db";
 import { genomicRange } from "../types";
 
 export async function rowsResolver(args: any) {

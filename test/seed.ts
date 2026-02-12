@@ -1,4 +1,4 @@
-import { sql } from "bun";
+import { sql } from "../src/db";
 
 let rows = [];
 for (let i = 0; i < 200; i += 10) {

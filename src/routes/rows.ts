@@ -1,5 +1,5 @@
 import { zValidator } from "@hono/zod-validator";
-import { sql } from "bun";
+import { sql } from "../db";
 import { Hono } from "hono";
 import { bedGraphRow, genomicRange } from "../types";
 

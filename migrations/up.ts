@@ -1,4 +1,4 @@
-import { sql } from "bun";
+import { sql } from "../src/db";
 
 try {
   await sql`
