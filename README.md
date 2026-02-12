@@ -1,18 +1,52 @@
 # Bun Hono GQL API template
 
-This project is a template for setting up Bun Hono REST/GraphQL APIs. 
+Template for Bun + Hono REST/GraphQL APIs with PostgreSQL.
 
-To run the development environments do
+Deployment on GCP with Cloud Run and Cloud SQL.
+
+## Development
 
 ```bash
+bun install
 bun run dev
 ```
 
-To run the database, and its migrations
+## Local Database (Docker)
 
 ```bash
-bun run db:start
-# wait for db to start
-bun run db:up
-bun run db:seed
+cp .env.example .env
+bun run db:start    # start postgres container
+bun run db:up       # run migrations
+bun run db:seed     # seed test data
+```
+
+Other commands: `db:down`, `db:reset`, `db:stop`
+
+## Testing
+
+```bash
+bun test
+```
+
+## Cloud Run Deployment
+
+Set these environment variables in Cloud Run:
+
+```
+POSTGRES_URL=postgresql://USER:PASSWORD@localhost:PORT/DATABASE
+POSTGRES_PATH=/cloudsql/PROJECT:REGION:INSTANCE/.s.PGSQL.PORT
+```
+
+Requirements:
+- Add Cloud SQL instance under "Connections" tab
+- Service account needs `Cloud SQL Client` role
+
+## Local Access to Cloud SQL
+
+```bash
+cloud-sql-proxy PROJECT:REGION:INSTANCE --port=PORT
+```
+
+```
+POSTGRES_URL="postgresql://USER:PASSWORD@localhost:PORT/DATABASE"
 ```
