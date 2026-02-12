@@ -4,11 +4,11 @@
     "dev": "bun run --hot src/index.ts",
     "build": "bun build ./src/index.ts --target=bun --outdir=./dist",
     "start": "bun dist/index.js",
+    "db:start": "docker compose up -d db",
+    "db:stop": "docker compose down",
     "db:up": "bun migrations/up.ts",
     "db:down": "bun migrations/down.ts",
     "db:seed": "bun test/seed.ts",
-    "db:start": "docker compose up -d db",
-    "db:stop": "docker compose down",
     "db:reset": "bun db:down && bun db:up && bun db:seed"
   },
   "dependencies": {

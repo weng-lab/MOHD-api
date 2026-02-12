@@ -4,7 +4,6 @@ import app from "../src";
 describe("health", () => {
   test("api and db running", async () => {
     const res = await app.request("/health");
-    console.log(res.status, await res.clone().text());
     expect(res.status).toBe(200);
   });
 });
