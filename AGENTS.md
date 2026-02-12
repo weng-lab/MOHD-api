@@ -4,7 +4,7 @@
 
 ## Project Overview
 
-Bun + Hono REST/GraphQL API template for genomic data (BedGraph rows).
+Bun + Hono REST/GraphQL API template.
 PostgreSQL database accessed via Bun's built-in SQL driver (no ORM).
 Zod v4 for runtime validation. TypeScript in strict mode.
 
@@ -43,13 +43,12 @@ bun run db:stop              # Stop Docker containers
 ### Testing
 
 ```bash
-bun test                     # Run all tests
-bun test test/endpoint.test.ts   # Run a single test file
+bun test                         # Run all tests
+bun test test/integration.test.ts   # Run a single test file
 bun test --filter "health"       # Run tests matching a pattern
 ```
 
 Tests use `bun:test` (built-in). Test files live in `test/` with `*.test.ts` naming.
-Note: Endpoint tests expect 500 responses when no real database is connected.
 
 ### Linting / Formatting
 
@@ -68,7 +67,6 @@ src/
     schema.ts           # GraphQL SDL schema
     resolvers.ts        # GraphQL resolvers
 test/
-  endpoint.test.ts      # Endpoint tests (bun:test)
   integration.test.ts   # Integration tests (currently empty)
   seed.ts               # Database seeding script
 migrations/
@@ -122,8 +120,8 @@ import { genomicRange } from "../types";
 // Define schema and infer type together
 const genomicRange = z.object({
   chrom: z.string(),
-  start: z.coerce.number(),
-  end: z.coerce.number(),
+  start: z.coerce.number().int(),
+  end: z.coerce.number().int(),
 });
 type GenomicRange = z.infer<typeof genomicRange>;
 ```
@@ -170,10 +168,10 @@ export default rows;
 
 ## Environment
 
-- Bun natively loads `.env.local` (no dotenv package needed)
+- Bun natively loads `.env` (no dotenv package needed)
 - Key variable: `POSTGRES_URL` (PostgreSQL connection string)
 - Default dev URL: `postgresql://postgres:example@localhost:5432/postgres`
-- API runs on port 3000 (Bun default)
+- API runs on port 3000 (Bun default), but can be set with `PORT` environment variable
 
 ## CI
 

@@ -1,7 +1,7 @@
 import { sql } from "bun";
 
 let rows = [];
-for (let i = 0; i < 20; i += 10) {
+for (let i = 0; i < 200; i += 10) {
   const start = i;
   rows.push({
     chrom: "chr1",
