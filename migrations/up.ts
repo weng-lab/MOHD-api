@@ -2,12 +2,9 @@ import { sql } from "../src/db";
 
 try {
   await sql`
-    CREATE TABLE IF NOT EXISTS rows (
-        id SERIAL PRIMARY KEY,
-        chrom VARCHAR(5),
-        chrom_start INTEGER,
-        chrom_end INTEGER,
-        data_value FLOAT
+    CREATE TABLE IF NOT EXISTS rna_tpm (
+        accession VARCHAR(15) PRIMARY KEY,
+        values REAL[]
     )
   `;
   console.log("created table");

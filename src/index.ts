@@ -5,6 +5,7 @@ import { logger } from "hono/logger";
 import { rootResolver } from "./graphql/resolvers";
 import { schema } from "./graphql/schema";
 import rows from "./routes/rows";
+import rna_tpm from "./routes/rna_tpm";
 
 // create an instance of hono
 const app = new Hono();
@@ -21,7 +22,9 @@ app.use(
   }),
 );
 
-app.route("/rows", rows);
+// app.route("/rows", rows);
+
+app.route("/rna", rna_tpm);
 
 app.get("/health", async (c) => {
   await sql`SELECT 1`;
