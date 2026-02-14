@@ -4,7 +4,6 @@ import { sql } from "./db";
 import { logger } from "hono/logger";
 import { rootResolver } from "./graphql/resolvers";
 import { schema } from "./graphql/schema";
-import rows from "./routes/rows";
 import rna_tpm from "./routes/rna_tpm";
 
 // create an instance of hono
@@ -13,16 +12,14 @@ const app = new Hono();
 // use the logger middleware
 app.use(logger());
 
-app.use(
-  "/graphql",
-  graphqlServer({
-    schema,
-    rootResolver,
-    graphiql: true,
-  }),
-);
-
-// app.route("/rows", rows);
+// app.use(
+//   "/graphql",
+//   graphqlServer({
+//     schema,
+//     rootResolver,
+//     graphiql: true,
+//   }),
+// );
 
 app.route("/rna", rna_tpm);
 

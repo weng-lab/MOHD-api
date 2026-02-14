@@ -1,22 +1,22 @@
 import type { RootResolver } from "@hono/graphql-server";
 import { sql } from "../db";
-import { genomicRange } from "../types";
+import z from "zod";
 
-export async function rowsResolver(args: any) {
-  const { chrom, start, end } = genomicRange.parse(args);
+const rnaQuery = z.object({
+  accession: z.string(),
+});
+export async function rnaResolver(args: any) {
+  const { accession } = rnaQuery.parse(args);
 
-  const rows = await sql`
-      SELECT chrom, chrom_start AS start, chrom_end AS end, data_value AS value from rows
-      WHERE chrom = ${chrom}
-      AND chrom_start >= ${start}
-      AND chrom_end <= ${end}
+  const values = await sql`
+      SELECT * FROM rna_tpm WHERE accession = ${accession}
   `;
 
-  return rows;
+  return values;
 }
 
 export const rootResolver: RootResolver = (c) => {
   return {
-    rows: rowsResolver,
+    rows: rnaResolver,
   };
 };

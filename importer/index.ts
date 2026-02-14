@@ -1,52 +1,39 @@
-import { file, sql } from "bun";
+import { SQL } from "bun";
 
-const filePath = process.argv[2];
+export const sql = new SQL({
+  url: process.env.POSTGRES_URL,
+  path: process.env.POSTGRES_PATH,
+});
 
-if (!filePath) {
-  console.error("Please provide a file path as an argument.");
-  process.exit(1);
+const filePath = "https://users.wenglab.org/niship/Phase-0_RNA-TPM.tsv";
+const file = await fetch(filePath);
+const text = await file.text();
+
+const rows = text.split("\n").slice(1).map(processLine);
+
+for (let i = 0; i < rows.length; i += 500) {
+  await insertRows(rows.slice(i, i + 500));
 }
+console.log("inserted rows");
 
-const f = file(filePath);
-if (!(await f.exists())) {
-  console.error(`File ${filePath} does not exist.`);
-  process.exit(1);
-}
-
-const stream = f.stream();
-const decoder = new TextDecoder();
-
-let buffer = "";
-let first = 1;
-for await (const chunk of stream) {
-  buffer += decoder.decode(chunk, { stream: true });
-  const lines = buffer.split("\n");
-  buffer = lines.pop() ?? "";
-
-  for (const line of lines) {
-    if (first) {
-      first = 0;
-      continue;
-    }
-    await processLine(line);
+async function insertRows(
+  rows: {
+    gene_id: string;
+    tpm_values: string;
+  }[],
+) {
+  try {
+    await sql`INSERT INTO rna_tpm ${sql(rows)}`;
+  } catch (e) {
+    console.log(e);
   }
 }
 
-if (buffer) {
-  await processLine(buffer);
-}
-
-async function processLine(line: string) {
+function processLine(line: string) {
   const columns = line.split("\t");
-  const accession = columns[0]!.split(".")[0]; // remove version number
+  const gene_id = columns[0]!.split(".")[0]!; // remove version number
   const values = columns.slice(1).map(Number);
   const pgArray = `{${values.join(",")}}`;
 
-  try {
-    sql`INSERT INTO rna_tpm (accession, values) VALUES (${accession}, ${pgArray}::REAL[])`;
-    console.log(`Inserted ${accession}`);
-  } catch (e) {
-    console.log(e);
-    process.exit(1);
-  }
+  return { gene_id: gene_id, tpm_values: pgArray };
 }

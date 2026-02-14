@@ -50,3 +50,15 @@ cloud-sql-proxy PROJECT:REGION:INSTANCE --port=PORT
 ```
 POSTGRES_URL="postgresql://USER:PASSWORD@localhost:PORT/DATABASE"
 ```
+
+## Importer
+
+Build and push image
+```bash
+# get project information
+gcloud artifacts repositories list
+
+# IMAGE_URL = REGION-docker.pkg.dev/PROJECT_ID/REPOSITORY/IMAGE_NAME
+
+gcloud builds submit --tag IMAGE_URL
+```
