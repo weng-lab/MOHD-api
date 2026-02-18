@@ -1,39 +1,20 @@
-import { SQL } from "bun";
+import { importRna } from "./rna";
 
-export const sql = new SQL({
-  url: process.env.POSTGRES_URL,
-  path: process.env.POSTGRES_PATH,
-});
-
-const filePath = "https://users.wenglab.org/niship/Phase-0_RNA-TPM.tsv";
-const file = await fetch(filePath);
-const text = await file.text();
-
-const rows = text.split("\n").slice(1).map(processLine);
-
-for (let i = 0; i < rows.length; i += 500) {
-  await insertRows(rows.slice(i, i + 500));
+const dataType = process.argv[3];
+if (!dataType) {
+  console.error("Data type is required");
+  process.exit(1);
 }
-console.log("inserted rows");
-
-async function insertRows(
-  rows: {
-    gene_id: string;
-    tpm_values: string;
-  }[],
-) {
-  try {
-    await sql`INSERT INTO rna_tpm ${sql(rows)}`;
-  } catch (e) {
-    console.log(e);
-  }
+const fileUrl = process.argv[4];
+if (!fileUrl) {
+  console.error("File URL is required");
+  process.exit(1);
 }
-
-function processLine(line: string) {
-  const columns = line.split("\t");
-  const gene_id = columns[0]!.split(".")[0]!; // remove version number
-  const values = columns.slice(1).map(Number);
-  const pgArray = `{${values.join(",")}}`;
-
-  return { gene_id: gene_id, tpm_values: pgArray };
+switch (dataType) {
+  case "rna":
+    await importRna(fileUrl);
+    process.exit(0);
+  default:
+    console.error(`Unknown data type: ${dataType}`);
+    process.exit(1);
 }
