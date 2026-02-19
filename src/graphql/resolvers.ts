@@ -1,22 +1,46 @@
 import type { RootResolver } from "@hono/graphql-server";
 import { sql } from "../db";
-import { genomicRange } from "../types";
+import z from "zod";
 
-export async function rowsResolver(args: any) {
-  const { chrom, start, end } = genomicRange.parse(args);
+const rnaQuery = z.object({
+  gene_ids: z.array(z.string()),
+});
 
-  const rows = await sql`
-      SELECT chrom, chrom_start AS start, chrom_end AS end, data_value AS value from rows
-      WHERE chrom = ${chrom}
-      AND chrom_start >= ${start}
-      AND chrom_end <= ${end}
+export async function rnaResolver(args: unknown) {
+  const { gene_ids } = rnaQuery.parse(args);
+
+  if (gene_ids.length === 0) return [];
+
+  const pgArray = `{${gene_ids.join(",")}}`;
+  const genes = await sql`
+    SELECT gene_id, tpm_values FROM rna_tpm WHERE gene_id = ANY(${pgArray}::text[])
   `;
 
-  return rows;
+  const tpmByGene = new Map<string, string[]>();
+  for (const gene of genes) {
+    tpmByGene.set(gene.gene_id, gene.tpm_values);
+  }
+
+  const samples = await sql`
+    SELECT * FROM rna_metadata ORDER BY sample_id
+  `;
+
+  return gene_ids.map((gene_id: string) => {
+    const tpmValues = tpmByGene.get(gene_id);
+    return {
+      gene_id,
+      samples: tpmValues
+        ? tpmValues.map((value: string, i: number) => ({
+            value: Number(value),
+            ...samples[i],
+          }))
+        : [],
+    };
+  });
 }
 
-export const rootResolver: RootResolver = (c) => {
+export const rootResolver: RootResolver = () => {
   return {
-    rows: rowsResolver,
+    rna_tpm: rnaResolver,
   };
 };

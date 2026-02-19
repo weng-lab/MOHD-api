@@ -1,6 +1,6 @@
-# Bun Hono GQL API template
+# mohd-api
 
-Template for Bun + Hono REST/GraphQL APIs with PostgreSQL.
+Bun + Hono GraphQL API for MOHD data.
 
 Deployment on GCP with Cloud Run and Cloud SQL.
 
@@ -20,7 +20,7 @@ bun run db:up       # run migrations
 bun run db:seed     # seed test data
 ```
 
-Other commands: `db:down`, `db:reset`, `db:stop`
+Other commands: `db:down`, `db:stop`
 
 ## Testing
 
@@ -28,7 +28,12 @@ Other commands: `db:down`, `db:reset`, `db:stop`
 bun test
 ```
 
-## Cloud Run Deployment
+## Deployment
+
+```bash
+bun run deploy:api        # deploy API to Cloud Run
+bun run deploy:importer   # deploy importer as Cloud Run job
+```
 
 Set these environment variables in Cloud Run:
 
@@ -49,4 +54,12 @@ cloud-sql-proxy PROJECT:REGION:INSTANCE --port=PORT
 
 ```
 POSTGRES_URL="postgresql://USER:PASSWORD@localhost:PORT/DATABASE"
+```
+
+## Importer
+
+Run locally:
+```bash
+bun run importer/index.ts meta   # import metadata
+bun run importer/index.ts rna    # import RNA TPM data
 ```

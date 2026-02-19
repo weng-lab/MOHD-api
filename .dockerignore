@@ -8,3 +8,5 @@ README.md
 LICENSE
 *.env*
 *.md
+importer
+migrations

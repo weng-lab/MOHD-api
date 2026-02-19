@@ -1,10 +1,9 @@
 import { graphqlServer } from "@hono/graphql-server";
 import { Hono } from "hono";
-import { sql } from "./db";
 import { logger } from "hono/logger";
+import { sql } from "./db";
 import { rootResolver } from "./graphql/resolvers";
 import { schema } from "./graphql/schema";
-import rows from "./routes/rows";
 
 // create an instance of hono
 const app = new Hono();
@@ -20,8 +19,6 @@ app.use(
     graphiql: true,
   }),
 );
-
-app.route("/rows", rows);
 
 app.get("/health", async (c) => {
   await sql`SELECT 1`;
