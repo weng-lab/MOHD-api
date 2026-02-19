@@ -1,19 +1,10 @@
-import { fetchTsv, insertRows } from "./utils";
+import { fetchTsv, insertRows, isValidRow } from "./utils";
 
 const rnaFilePath = "https://users.wenglab.org/niship/Phase-0-Metadata.txt";
 const atacFilePath =
   "https://users.wenglab.org/niship/Phase_0_ATAC_Metadata_with_entity.tsv";
 
 const sexMap: Record<string, string> = { "1": "male", "2": "female" };
-
-const validStatuses = new Set(["case", "control", "unknown"]);
-
-function isValidRow(row: Record<string, string>): boolean {
-  return (
-    Object.values(row).every((v) => v !== undefined && v !== "") &&
-    validStatuses.has(row.status!)
-  );
-}
 
 export async function importMeta() {
   const rnaLines = await fetchTsv(rnaFilePath);

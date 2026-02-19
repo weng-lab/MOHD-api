@@ -18,9 +18,7 @@ try {
     await sql`DROP TYPE IF EXISTS ${sql(typname)} CASCADE`;
   }
 
-  console.log(
-    `dropped ${tables.length} tables and ${types.length} types`,
-  );
+  console.log(`dropped ${tables.length} tables and ${types.length} types`);
 } catch (e) {
   console.log(e);
 }

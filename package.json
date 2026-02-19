@@ -9,7 +9,7 @@
     "db:up": "bun test/up.ts",
     "db:down": "bun test/down.ts",
     "db:seed": "bun test/seed.ts",
-    "deploy:api": "gcloud run services deploy mohd-api --source . --region us-east4",
+    "deploy:api": "gcloud run deploy mohd-api --source . --region us-east4",
     "deploy:importer": "gcloud run jobs deploy importer --source ./importer --region us-east4"
   },
   "dependencies": {

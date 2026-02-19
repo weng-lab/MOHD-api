@@ -1,10 +1,10 @@
-import { fetchTsv, insertRows } from "./utils";
+import { fetchTsv, insertRows, isValidRow } from "./utils";
 
 const filePath = "https://users.wenglab.org/niship/Phase-0_RNA-TPM.tsv";
 
 export async function importRna() {
   const lines = await fetchTsv(filePath);
-  const rows = lines.map(processLine);
+  const rows = lines.map(processLine).filter(isValidRow);
   await insertRows("rna_tpm", rows);
 }
 
