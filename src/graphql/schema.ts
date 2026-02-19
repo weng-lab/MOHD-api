@@ -10,7 +10,12 @@ export const schema = buildSchema(`
     sex: String!
   }
 
+  type RnaGene {
+    gene_id: String!
+    samples: [RnaSample!]!
+  }
+
   type Query {
-    rna_tpm(gene_id: String!): [RnaSample!]
+    rna_tpm(gene_ids: [String!]!): [RnaGene!]!
   }
 `);

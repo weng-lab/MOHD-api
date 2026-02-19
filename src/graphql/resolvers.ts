@@ -3,26 +3,40 @@ import { sql } from "../db";
 import z from "zod";
 
 const rnaQuery = z.object({
-  gene_id: z.string(),
+  gene_ids: z.array(z.string()),
 });
 
 export async function rnaResolver(args: unknown) {
-  const { gene_id } = rnaQuery.parse(args);
+  const { gene_ids } = rnaQuery.parse(args);
 
+  if (gene_ids.length === 0) return [];
+
+  const pgArray = `{${gene_ids.join(",")}}`;
   const genes = await sql`
-    SELECT tpm_values FROM rna_tpm WHERE gene_id = ${gene_id}
+    SELECT gene_id, tpm_values FROM rna_tpm WHERE gene_id = ANY(${pgArray}::text[])
   `;
 
-  if (genes.length === 0) return null;
+  const tpmByGene = new Map<string, string[]>();
+  for (const gene of genes) {
+    tpmByGene.set(gene.gene_id, gene.tpm_values);
+  }
 
   const samples = await sql`
     SELECT * FROM rna_metadata ORDER BY sample_id
   `;
 
-  return genes[0].tpm_values.map((value: string, i: number) => ({
-    value: Number(value),
-    ...samples[i],
-  }));
+  return gene_ids.map((gene_id: string) => {
+    const tpmValues = tpmByGene.get(gene_id);
+    return {
+      gene_id,
+      samples: tpmValues
+        ? tpmValues.map((value: string, i: number) => ({
+            value: Number(value),
+            ...samples[i],
+          }))
+        : [],
+    };
+  });
 }
 
 export const rootResolver: RootResolver = () => {
