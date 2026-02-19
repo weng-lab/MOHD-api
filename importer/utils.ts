@@ -1,24 +1,57 @@
 import { sql } from "./db";
 
-export async function fetchTsv(url: string): Promise<string[]> {
-  const response = await fetch(url);
-  const text = await response.text();
-  return text
-    .split("\n")
-    .slice(1)
-    .filter((line) => line.trim().length > 0);
-}
-
-export async function insertRows(
+export async function streamImport(
+  url: string,
   table: string,
-  rows: Record<string, string>[],
+  parseLine: (line: string) => Record<string, string>,
 ) {
-  for (let i = 0; i < rows.length; i += 500) {
-    await sql`INSERT INTO ${sql(table)} ${sql(rows.slice(i, i + 500))}`;
+  const response = await fetch(url);
+  const reader = response.body!.getReader();
+  const decoder = new TextDecoder();
+
+  let buffer = "";
+  let isHeader = true;
+  let batch: Record<string, string>[] = [];
+  let total = 0;
+
+  while (true) {
+    const { done, value } = await reader.read();
+    if (done) break;
+
+    buffer += decoder.decode(value, { stream: true });
+    const lines = buffer.split("\n");
+    buffer = lines.pop()!;
+
+    for (const line of lines) {
+      if (isHeader) {
+        isHeader = false;
+        continue;
+      }
+      if (line.trim().length === 0) continue;
+
+      const row = parseLine(line);
+      if (isValidRow(row)) batch.push(row);
+
+      if (batch.length >= 500) {
+        await insertRows(table, batch);
+        total += batch.length;
+        batch = [];
+      }
+    }
   }
-  console.log(`inserted ${rows.length} ${table} rows`);
+
+  if (batch.length > 0) {
+    await insertRows(table, batch);
+    total += batch.length;
+  }
+
+  console.log(`inserted ${total} ${table} rows`);
 }
 
-export function isValidRow(row: Record<string, string>): boolean {
+async function insertRows(table: string, rows: Record<string, string>[]) {
+  await sql`INSERT INTO ${sql(table)} ${sql(rows)}`;
+}
+
+function isValidRow(row: Record<string, string>): boolean {
   return Object.values(row).every((v) => v !== undefined && v !== "");
 }
