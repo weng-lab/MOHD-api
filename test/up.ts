@@ -32,6 +32,13 @@ try {
         sex sex NOT NULL
     )
   `;
+
+  await sql`
+    CREATE TABLE IF NOT EXISTS atac_zscore (
+        accession VARCHAR(20) PRIMARY KEY,
+        zscore_values NUMERIC(10, 2)[]
+    )
+  `;
 } catch (e) {
   console.log(e);
 }

@@ -24,6 +24,75 @@ describe("not found", () => {
   });
 });
 
+describe("graphql atac_zscore", () => {
+  test("single accession returns samples with metadata", async () => {
+    const res = await app.request(
+      gql(
+        '{ atac_zscore(accessions: ["0"]) { accession, samples { value, sample_id, site, opc_id, protocol, status, sex, entity_id } } }',
+      ),
+    );
+    const body = (await res.json()) as any;
+    const acc = body.data.atac_zscore[0];
+
+    expect(acc.accession).toBe("0");
+    expect(acc.samples).toHaveLength(5);
+    expect(acc.samples[0].value).toBe(0);
+    expect(acc.samples[0].sample_id).toBe("SAMPLE_001");
+    expect(acc.samples[0].site).toBe("st1");
+    expect(acc.samples[0].opc_id).toBe("opcA");
+    expect(acc.samples[0].protocol).toBe("prtA");
+    expect(acc.samples[0].status).toBe("case");
+    expect(acc.samples[0].sex).toBe("male");
+    expect(acc.samples[0].entity_id).toBe("entA");
+  });
+
+  test("multiple accessions", async () => {
+    const res = await app.request(
+      gql(
+        '{ atac_zscore(accessions: ["0", "1"]) { accession, samples { value } } }',
+      ),
+    );
+    const body = (await res.json()) as any;
+    const accs = body.data.atac_zscore;
+
+    expect(accs).toHaveLength(2);
+    expect(accs[0].accession).toBe("0");
+    expect(accs[1].accession).toBe("1");
+    // accession "1" first sample should be 1.00
+    expect(accs[1].samples[0].value).toBe(1);
+  });
+
+  test("non-existent accession returns empty samples", async () => {
+    const res = await app.request(
+      gql(
+        '{ atac_zscore(accessions: ["nonexistent"]) { accession, samples { value } } }',
+      ),
+    );
+    const body = (await res.json()) as any;
+    const acc = body.data.atac_zscore[0];
+
+    expect(acc.accession).toBe("nonexistent");
+    expect(acc.samples).toHaveLength(0);
+  });
+
+  test("empty accessions returns empty array", async () => {
+    const res = await app.request(
+      gql("{ atac_zscore(accessions: []) { accession } }"),
+    );
+    const body = (await res.json()) as any;
+
+    expect(body.data.atac_zscore).toHaveLength(0);
+  });
+
+  test("missing accessions argument returns error", async () => {
+    const res = await app.request(gql("{ atac_zscore { accession } }"));
+    const body = (await res.json()) as any;
+
+    expect(body.errors).toBeDefined();
+    expect(body.errors.length).toBeGreaterThan(0);
+  });
+});
+
 describe("graphql rna_tpm", () => {
   test("single gene returns samples with metadata", async () => {
     const res = await app.request(
