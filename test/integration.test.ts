@@ -28,7 +28,7 @@ describe("graphql atac_zscore", () => {
   test("single accession returns samples with metadata", async () => {
     const res = await app.request(
       gql(
-        '{ atac_zscore(accessions: ["0"]) { accession, samples { value, sample_id, site, opc_id, protocol, status, sex, entity_id } } }',
+        '{ atac_zscore(accessions: ["0"]) { accession, samples { value, sample_id, site, opc_id, protocol, status, sex, entity_id, umap_x, umap_y } } }',
       ),
     );
     const body = (await res.json()) as any;
@@ -44,6 +44,8 @@ describe("graphql atac_zscore", () => {
     expect(acc.samples[0].status).toBe("case");
     expect(acc.samples[0].sex).toBe("male");
     expect(acc.samples[0].entity_id).toBe("entA");
+    expect(acc.samples[0].umap_x).toBe(1.0);
+    expect(acc.samples[0].umap_y).toBe(2.0);
   });
 
   test("multiple accessions", async () => {
@@ -97,7 +99,7 @@ describe("graphql rna_tpm", () => {
   test("single gene returns samples with metadata", async () => {
     const res = await app.request(
       gql(
-        '{ rna_tpm(gene_ids: ["0"]) { gene_id, samples { value, sample_id, kit, site, status, sex } } }',
+        '{ rna_tpm(gene_ids: ["0"]) { gene_id, samples { value, sample_id, kit, site, status, sex, umap_x, umap_y } } }',
       ),
     );
     const body = (await res.json()) as any;
@@ -111,6 +113,8 @@ describe("graphql rna_tpm", () => {
     expect(gene.samples[0].site).toBe("st1");
     expect(gene.samples[0].status).toBe("case");
     expect(gene.samples[0].sex).toBe("male");
+    expect(gene.samples[0].umap_x).toBe(1.0);
+    expect(gene.samples[0].umap_y).toBe(2.0);
   });
 
   test("multiple genes", async () => {

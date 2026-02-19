@@ -7,6 +7,8 @@ const metadata = [
     site: "st1",
     status: "case",
     sex: "male",
+    umap_x: "1.0",
+    umap_y: "2.0",
   },
   {
     sample_id: "SAMPLE_002",
@@ -14,6 +16,8 @@ const metadata = [
     site: "st2",
     status: "control",
     sex: "female",
+    umap_x: "3.0",
+    umap_y: "4.0",
   },
   {
     sample_id: "SAMPLE_003",
@@ -21,6 +25,8 @@ const metadata = [
     site: "st1",
     status: "case",
     sex: "female",
+    umap_x: "5.0",
+    umap_y: "6.0",
   },
   {
     sample_id: "SAMPLE_004",
@@ -28,6 +34,8 @@ const metadata = [
     site: "st2",
     status: "control",
     sex: "male",
+    umap_x: "7.0",
+    umap_y: "8.0",
   },
   {
     sample_id: "SAMPLE_005",
@@ -35,6 +43,8 @@ const metadata = [
     site: "st1",
     status: "unknown",
     sex: "male",
+    umap_x: "9.0",
+    umap_y: "10.0",
   },
 ];
 
@@ -56,6 +66,8 @@ const atac_metadata = [
     status: "case",
     sex: "male",
     entity_id: "entA",
+    umap_x: "1.0",
+    umap_y: "2.0",
   },
   {
     sample_id: "SAMPLE_002",
@@ -65,6 +77,8 @@ const atac_metadata = [
     status: "control",
     sex: "female",
     entity_id: "entB",
+    umap_x: "3.0",
+    umap_y: "4.0",
   },
   {
     sample_id: "SAMPLE_003",
@@ -74,6 +88,8 @@ const atac_metadata = [
     status: "case",
     sex: "female",
     entity_id: "entC",
+    umap_x: "5.0",
+    umap_y: "6.0",
   },
   {
     sample_id: "SAMPLE_004",
@@ -83,6 +99,8 @@ const atac_metadata = [
     status: "control",
     sex: "male",
     entity_id: "entD",
+    umap_x: "7.0",
+    umap_y: "8.0",
   },
   {
     sample_id: "SAMPLE_005",
@@ -92,6 +110,8 @@ const atac_metadata = [
     status: "unknown",
     sex: "male",
     entity_id: "entE",
+    umap_x: "9.0",
+    umap_y: "10.0",
   },
 ];
 
