@@ -4,11 +4,13 @@
     "dev": "bun run --hot src/index.ts",
     "build": "bun build ./src/index.ts --target=bun --outdir=./dist",
     "start": "bun dist/index.js",
+    "import": "bun run importer/index.ts",
     "db:start": "docker compose up -d db",
     "db:stop": "docker compose down",
     "db:up": "bun test/up.ts",
     "db:down": "bun test/down.ts",
     "db:seed": "bun test/seed.ts",
+    "db:reset": "bun test/down.ts && bun test/up.ts && bun test/seed.ts",
     "deploy:api": "gcloud run deploy mohd-api --source . --region us-east4",
     "deploy:importer": "gcloud run jobs deploy importer --source ./importer --region us-east4"
   },

@@ -7,6 +7,8 @@ const metadata = [
     site: "st1",
     status: "case",
     sex: "male",
+    umap_x: "1.0",
+    umap_y: "2.0",
   },
   {
     sample_id: "SAMPLE_002",
@@ -14,6 +16,8 @@ const metadata = [
     site: "st2",
     status: "control",
     sex: "female",
+    umap_x: "3.0",
+    umap_y: "4.0",
   },
   {
     sample_id: "SAMPLE_003",
@@ -21,6 +25,8 @@ const metadata = [
     site: "st1",
     status: "case",
     sex: "female",
+    umap_x: "5.0",
+    umap_y: "6.0",
   },
   {
     sample_id: "SAMPLE_004",
@@ -28,6 +34,8 @@ const metadata = [
     site: "st2",
     status: "control",
     sex: "male",
+    umap_x: "7.0",
+    umap_y: "8.0",
   },
   {
     sample_id: "SAMPLE_005",
@@ -35,6 +43,8 @@ const metadata = [
     site: "st1",
     status: "unknown",
     sex: "male",
+    umap_x: "9.0",
+    umap_y: "10.0",
   },
 ];
 
@@ -47,9 +57,78 @@ for (let i = 0; i < 10; i++) {
   });
 }
 
+const atac_metadata = [
+  {
+    sample_id: "SAMPLE_001",
+    site: "st1",
+    opc_id: "opcA",
+    protocol: "prtA",
+    status: "case",
+    sex: "male",
+    entity_id: "entA",
+    umap_x: "1.0",
+    umap_y: "2.0",
+  },
+  {
+    sample_id: "SAMPLE_002",
+    site: "st2",
+    opc_id: "opcB",
+    protocol: "prtB",
+    status: "control",
+    sex: "female",
+    entity_id: "entB",
+    umap_x: "3.0",
+    umap_y: "4.0",
+  },
+  {
+    sample_id: "SAMPLE_003",
+    site: "st1",
+    opc_id: "opcA",
+    protocol: "prtA",
+    status: "case",
+    sex: "female",
+    entity_id: "entC",
+    umap_x: "5.0",
+    umap_y: "6.0",
+  },
+  {
+    sample_id: "SAMPLE_004",
+    site: "st2",
+    opc_id: "opcB",
+    protocol: "prtB",
+    status: "control",
+    sex: "male",
+    entity_id: "entD",
+    umap_x: "7.0",
+    umap_y: "8.0",
+  },
+  {
+    sample_id: "SAMPLE_005",
+    site: "st1",
+    opc_id: "opcA",
+    protocol: "prtA",
+    status: "unknown",
+    sex: "male",
+    entity_id: "entE",
+    umap_x: "9.0",
+    umap_y: "10.0",
+  },
+];
+
+const atac_zscore = [];
+for (let i = 0; i < 10; i++) {
+  const values = atac_metadata.map((_, j) => (i + j).toFixed(2));
+  atac_zscore.push({
+    accession: String(i),
+    zscore_values: `{${values.join(",")}}`,
+  });
+}
+
 try {
   await sql`INSERT INTO rna_metadata ${sql(metadata)}`;
   await sql`INSERT INTO rna_tpm ${sql(rna_tpm)}`;
+  await sql`INSERT INTO atac_metadata ${sql(atac_metadata)}`;
+  await sql`INSERT INTO atac_zscore ${sql(atac_zscore)}`;
 } catch (e) {
   console.log(e);
 }

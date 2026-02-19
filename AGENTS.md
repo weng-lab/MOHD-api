@@ -36,6 +36,7 @@ bun run db:start             # Start PostgreSQL via Docker
 bun run db:up                # Run migrations (create tables)
 bun run db:seed              # Seed test data
 bun run db:down              # Drop tables
+bun run db:reset             # Full reset: down + up + seed
 bun run db:stop              # Stop Docker containers
 ```
 

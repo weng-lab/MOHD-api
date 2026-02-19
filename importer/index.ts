@@ -1,3 +1,4 @@
+import { importAtac } from "./atac";
 import { importMeta } from "./meta";
 import { importRna } from "./rna";
 
@@ -10,6 +11,9 @@ if (!dataType) {
 switch (dataType) {
   case "rna":
     await importRna();
+    process.exit(0);
+  case "atac":
+    await importAtac();
     process.exit(0);
   case "meta":
     await importMeta();

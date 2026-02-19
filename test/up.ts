@@ -19,7 +19,9 @@ try {
         protocol VARCHAR(20) NOT NULL,
         status status NOT NULL,
         sex sex NOT NULL,
-        entity_id VARCHAR(20) NOT NULL
+        entity_id VARCHAR(20) NOT NULL,
+        umap_x NUMERIC(10, 6),
+        umap_y NUMERIC(10, 6)
     )
   `;
 
@@ -29,7 +31,16 @@ try {
         kit VARCHAR(10) NOT NULL,
         site VARCHAR(3) NOT NULL,
         status status NOT NULL,
-        sex sex NOT NULL
+        sex sex NOT NULL,
+        umap_x NUMERIC(10, 6),
+        umap_y NUMERIC(10, 6)
+    )
+  `;
+
+  await sql`
+    CREATE TABLE IF NOT EXISTS atac_zscore (
+        accession VARCHAR(20) PRIMARY KEY,
+        zscore_values NUMERIC(10, 2)[]
     )
   `;
 } catch (e) {

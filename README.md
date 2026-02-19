@@ -20,7 +20,7 @@ bun run db:up       # run migrations
 bun run db:seed     # seed test data
 ```
 
-Other commands: `db:down`, `db:stop`
+Other commands: `db:down`, `db:reset`, `db:stop`
 
 ## Testing
 
