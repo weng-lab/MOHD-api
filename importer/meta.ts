@@ -6,12 +6,23 @@ const atacFilePath =
 
 const sexMap: Record<string, string> = { "1": "male", "2": "female" };
 
+const validStatuses = new Set(["case", "control", "unknown"]);
+
+function isValidRow(row: Record<string, string>): boolean {
+  return (
+    Object.values(row).every((v) => v !== undefined && v !== "") &&
+    validStatuses.has(row.status!)
+  );
+}
+
 export async function importMeta() {
   const rnaLines = await fetchTsv(rnaFilePath);
-  await insertRows("rna_metadata", rnaLines.map(parseRnaLine));
+  const rnaRows = rnaLines.map(parseRnaLine).filter(isValidRow);
+  await insertRows("rna_metadata", rnaRows);
 
   const atacLines = await fetchTsv(atacFilePath);
-  await insertRows("atac_metadata", atacLines.map(parseAtacLine));
+  const atacRows = atacLines.map(parseAtacLine).filter(isValidRow);
+  await insertRows("atac_metadata", atacRows);
 }
 
 function parseRnaLine(line: string) {
