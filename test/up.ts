@@ -7,11 +7,10 @@ try {
         tpm_values NUMERIC(10, 2)[]
     )
   `;
-  // metadata
+
   await sql`CREATE TYPE status AS ENUM ('case', 'control', 'unknown');`;
   await sql`CREATE TYPE sex AS ENUM ('male', 'female');`;
 
-  // atac metadata
   await sql`
     CREATE TABLE IF NOT EXISTS atac_metadata (
         sample_id VARCHAR(15) PRIMARY KEY,
@@ -24,7 +23,6 @@ try {
     )
   `;
 
-  // rna metadata
   await sql`
     CREATE TABLE IF NOT EXISTS rna_metadata (
         sample_id VARCHAR(15) PRIMARY KEY,
