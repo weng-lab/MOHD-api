@@ -20,7 +20,7 @@ bun run db:up       # run migrations
 bun run db:seed     # seed test data
 ```
 
-Other commands: `db:down`, `db:reset`, `db:stop`
+Other commands: `db:down`, `db:stop`
 
 ## Testing
 
@@ -53,12 +53,13 @@ POSTGRES_URL="postgresql://USER:PASSWORD@localhost:PORT/DATABASE"
 
 ## Importer
 
-Build and push image
+Run locally:
 ```bash
-# get project information
-gcloud artifacts repositories list
+bun run importer/index.ts meta   # import metadata
+bun run importer/index.ts rna    # import RNA TPM data
+```
 
-# IMAGE_URL = REGION-docker.pkg.dev/PROJECT_ID/REPOSITORY/IMAGE_NAME
-
-gcloud builds submit --tag IMAGE_URL
+Deploy as Cloud Run job:
+```bash
+bun run deploy:importer
 ```

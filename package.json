@@ -6,10 +6,11 @@
     "start": "bun dist/index.js",
     "db:start": "docker compose up -d db",
     "db:stop": "docker compose down",
-    "db:up": "bun migrations/up.ts",
-    "db:down": "bun migrations/down.ts",
+    "db:up": "bun test/up.ts",
+    "db:down": "bun test/down.ts",
     "db:seed": "bun test/seed.ts",
-    "db:reset": "bun db:down && bun db:up && bun db:seed"
+    "deploy:api": "gcloud run services deploy mohd-api --source . --region us-east4",
+    "deploy:importer": "gcloud run jobs deploy importer --source ./importer --region us-east4"
   },
   "dependencies": {
     "@hono/graphql-server": "^0.7.0",

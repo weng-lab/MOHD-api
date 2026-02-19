@@ -1,10 +1,9 @@
 import { graphqlServer } from "@hono/graphql-server";
 import { Hono } from "hono";
-import { sql } from "./db";
 import { logger } from "hono/logger";
+import { sql } from "./db";
 import { rootResolver } from "./graphql/resolvers";
 import { schema } from "./graphql/schema";
-import rna_tpm from "./routes/rna_tpm";
 
 // create an instance of hono
 const app = new Hono();
@@ -12,16 +11,14 @@ const app = new Hono();
 // use the logger middleware
 app.use(logger());
 
-// app.use(
-//   "/graphql",
-//   graphqlServer({
-//     schema,
-//     rootResolver,
-//     graphiql: true,
-//   }),
-// );
-
-app.route("/rna", rna_tpm);
+app.use(
+  "/graphql",
+  graphqlServer({
+    schema,
+    rootResolver,
+    graphiql: true,
+  }),
+);
 
 app.get("/health", async (c) => {
   await sql`SELECT 1`;
