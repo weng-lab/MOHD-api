@@ -30,10 +30,12 @@ export async function rnaResolver(args: unknown) {
     return {
       gene_id,
       samples: tpmValues
-        ? tpmValues.map((value: string, i: number) => ({
-            value: Number(value),
-            ...samples[i],
-          }))
+        ? tpmValues
+            .filter((_: string, i: number) => samples[i])
+            .map((value: string, i: number) => ({
+              value: Number(value),
+              ...samples[i],
+            }))
         : [],
     };
   });
@@ -67,10 +69,12 @@ export async function atacResolver(args: unknown) {
     return {
       accession,
       samples: zscoreValues
-        ? zscoreValues.map((value: string, i: number) => ({
-            value: Number(value),
-            ...samples[i],
-          }))
+        ? zscoreValues
+            .filter((_: string, i: number) => samples[i])
+            .map((value: string, i: number) => ({
+              value: Number(value),
+              ...samples[i],
+            }))
         : [],
     };
   });

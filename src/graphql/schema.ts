@@ -8,6 +8,8 @@ export const schema = buildSchema(`
     site: String!
     status: String!
     sex: String!
+    umap_x: Float
+    umap_y: Float
   }
 
   type RnaGene {
@@ -24,6 +26,8 @@ export const schema = buildSchema(`
     status: String!
     sex: String!
     entity_id: String!
+    umap_x: Float
+    umap_y: Float
   }
 
   type AtacAccession {
