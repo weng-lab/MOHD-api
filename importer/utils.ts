@@ -5,6 +5,7 @@ export async function streamImport(
   table: string,
   parseLine: (line: string) => Record<string, string>,
 ) {
+  console.log(`streaming ${table} from ${url}...`);
   const response = await fetch(url);
   const reader = response.body!.getReader();
   const decoder = new TextDecoder();
@@ -35,6 +36,7 @@ export async function streamImport(
       if (batch.length >= 500) {
         await insertRows(table, batch);
         total += batch.length;
+        console.log(`${table}: ${total} rows inserted`);
         batch = [];
       }
     }
