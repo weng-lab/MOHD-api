@@ -34,7 +34,7 @@ export async function rnaResolver(args: unknown) {
             .filter((_: string, i: number) => samples[i])
             .map((value: string, i: number) => ({
               value: Number(value),
-              ...samples[i],
+              metadata: samples[i]
             }))
         : [],
     };
@@ -73,16 +73,57 @@ export async function atacResolver(args: unknown) {
             .filter((_: string, i: number) => samples[i])
             .map((value: string, i: number) => ({
               value: Number(value),
-              ...samples[i],
+              metadata: samples[i], 
             }))
         : [],
     };
   });
+}
+/* ---------------- RNA METADATA ---------------- */
+
+export async function rnaMetadataResolver() {
+  const rows = await sql`
+    SELECT
+      sample_id,
+      kit,
+      site,
+      status,
+      sex,
+      umap_x,
+      umap_y
+    FROM rna_metadata
+    ORDER BY sample_id
+  `;
+
+  return rows;
+}
+
+/* ---------------- ATAC METADATA ---------------- */
+
+export async function atacMetadataResolver() {
+  const rows = await sql`
+    SELECT
+      sample_id,
+      site,
+      opc_id,
+      protocol,
+      status,
+      sex,
+      entity_id,
+      umap_x,
+      umap_y
+    FROM atac_metadata
+    ORDER BY sample_id
+  `;
+
+  return rows;
 }
 
 export const rootResolver: RootResolver = () => {
   return {
     rna_tpm: rnaResolver,
     atac_zscore: atacResolver,
+    rna_metadata: rnaMetadataResolver,
+    atac_metadata: atacMetadataResolver
   };
 };

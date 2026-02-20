@@ -1,8 +1,22 @@
 import { buildSchema } from "graphql";
 
 export const schema = buildSchema(`
-  type RnaSample {
-    value: Float!
+  """
+  Shared fields for all samples
+  """
+  interface SampleMetadata {
+    sample_id: String!
+    site: String!
+    status: String!
+    sex: String!
+    umap_x: Float
+    umap_y: Float
+  }
+
+  """
+  RNA sample metadata
+  """
+  type RnaSampleMetadata implements SampleMetadata {
     sample_id: String!
     kit: String!
     site: String!
@@ -12,13 +26,23 @@ export const schema = buildSchema(`
     umap_y: Float
   }
 
+  """
+  RNA expression value for a gene in a sample
+  """
+  type RnaSample {
+    value: Float!
+    metadata: RnaSampleMetadata!
+  }
+
   type RnaGene {
     gene_id: String!
     samples: [RnaSample!]!
   }
 
-  type AtacSample {
-    value: Float!
+  """
+  ATAC sample metadata
+  """
+  type AtacSampleMetadata implements SampleMetadata {
     sample_id: String!
     site: String!
     opc_id: String!
@@ -30,6 +54,14 @@ export const schema = buildSchema(`
     umap_y: Float
   }
 
+  """
+  ATAC z-score value for an accession in a sample
+  """
+  type AtacSample {
+    value: Float!
+    metadata: AtacSampleMetadata!
+  }
+
   type AtacAccession {
     accession: String!
     samples: [AtacSample!]!
@@ -38,5 +70,8 @@ export const schema = buildSchema(`
   type Query {
     rna_tpm(gene_ids: [String!]!): [RnaGene!]!
     atac_zscore(accessions: [String!]!): [AtacAccession!]!
+
+    rna_metadata: [RnaSampleMetadata!]!
+    atac_metadata: [AtacSampleMetadata!]!
   }
 `);
