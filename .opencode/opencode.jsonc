@@ -5,5 +5,10 @@
       "type": "remote",
       "url": "https://bun.com/docs/mcp",
     },
+    "gcloud": {
+      "type": "local",
+      "command": ["npx", "-y", "@google-cloud/gcloud-mcp"],
+      "enabled": true,
+    },
   },
 }
