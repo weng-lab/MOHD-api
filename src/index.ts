@@ -1,5 +1,6 @@
 import { graphqlServer } from "@hono/graphql-server";
 import { Hono } from "hono";
+import { cors } from "hono/cors";
 import { logger } from "hono/logger";
 import { sql } from "./db";
 import { rootResolver } from "./graphql/resolvers";
@@ -11,6 +12,15 @@ const app = new Hono();
 // use the logger middleware
 app.use(logger());
 
+//allow cors
+app.use(
+  "*",
+  cors({
+    origin: "*",
+    allowMethods: ["GET", "POST", "OPTIONS"],
+    allowHeaders: ["Content-Type", "Authorization"],
+  })
+);
 app.use(
   "/graphql",
   graphqlServer({
