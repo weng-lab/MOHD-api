@@ -112,7 +112,7 @@ export async function atacMetadataResolver() {
       entity_id,
       umap_x,
       umap_y,
-      biospeciman
+      biospecimen
     FROM atac_metadata
     ORDER BY sample_id
   `;

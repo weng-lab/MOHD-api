@@ -23,7 +23,7 @@ export async function createMetaTables() {
         entity_id VARCHAR(20) NOT NULL,
         umap_x NUMERIC(10, 6),
         umap_y NUMERIC(10, 6),
-        biospeciman VARCHAR(20) NOT NULL
+        biospecimen VARCHAR(20) NOT NULL
     )
   `;
 
@@ -58,7 +58,7 @@ export async function importMeta() {
   });
 
   await streamImport(atacFilePath, "atac_metadata", (line) => {
-    const [sample_id, site, opc_id, protocol, status, sex, entity_id, umap_x, umap_y, biospeciman] =
+    const [sample_id, site, opc_id, protocol, status, sex, entity_id, umap_x, umap_y, biospecimen] =
       line.split("\t");
     return {
       sample_id: sample_id!.trim(),
@@ -70,7 +70,7 @@ export async function importMeta() {
       entity_id: entity_id!.trim(),
       umap_x: umap_x?.trim() || "",
       umap_y: umap_y?.trim() || "",
-      biospeciman: biospeciman!.trim()
+      biospecimen: biospecimen!.trim()
     };
   });
 }
