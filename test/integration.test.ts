@@ -24,11 +24,11 @@ describe("not found", () => {
   });
 });
 
-describe("graphql atac_zscore", () => {
+describe("graphql atac_zscore and metadata", () => {
   test("fetch atac metadata", async () => {
     const res = await app.request(
       gql(
-        '{ atac_metadata { sample_id, site, opc_id, protocol, status, sex, entity_id, umap_x, umap_y  } }',
+        '{ atac_metadata { sample_id, site, opc_id, protocol, status, sex, entity_id, umap_x, umap_y, biospecimen  } }',
       ),
     );
     const body = (await res.json()) as any;
@@ -42,12 +42,14 @@ describe("graphql atac_zscore", () => {
     expect(atac_metadata.entity_id).toBe("entA");
     expect(atac_metadata.umap_x).toBe(1.0);
     expect(atac_metadata.umap_y).toBe(2.0);
+    expect(atac_metadata.biospecimen).toBe("bsA");
+    
 
   })
   test("single accession returns samples with metadata", async () => {
     const res = await app.request(
       gql(
-        '{ atac_zscore(accessions: ["0"]) { accession, samples { value, metadata { sample_id, site, opc_id, protocol, status, sex, entity_id, umap_x, umap_y } } } }',
+        '{ atac_zscore(accessions: ["0"]) { accession, samples { value, metadata { sample_id, site, opc_id, protocol, status, sex, entity_id, umap_x, umap_y, biospecimen } } } }',
       ),
     );
     const body = (await res.json()) as any;
@@ -65,6 +67,8 @@ describe("graphql atac_zscore", () => {
     expect(acc.samples[0].metadata.entity_id).toBe("entA");
     expect(acc.samples[0].metadata.umap_x).toBe(1.0);
     expect(acc.samples[0].metadata.umap_y).toBe(2.0);
+    expect(acc.samples[0].metadata.biospecimen).toBe("bsA");
+    //
   });
 
   test("multiple accessions", async () => {
