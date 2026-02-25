@@ -12,7 +12,7 @@
     "db:seed": "bun test/seed.ts",
     "db:reset": "bun test/down.ts && bun test/up.ts && bun test/seed.ts",
     "deploy:api": "gcloud run deploy mohd-api --source . --region us-east4",
-    "deploy:importer": "gcloud run jobs deploy importer --source ./importer --region us-east4"
+    "deploy:importer": "gcloud run jobs deploy importer --source ./importer --region us-east4 --project mohd-485914"
   },
   "dependencies": {
     "@hono/graphql-server": "^0.7.0",

@@ -21,7 +21,8 @@ try {
         sex sex NOT NULL,
         entity_id VARCHAR(20) NOT NULL,
         umap_x NUMERIC(10, 6),
-        umap_y NUMERIC(10, 6)
+        umap_y NUMERIC(10, 6),
+        biospeciman VARCHAR(20) NOT NULL
     )
   `;
 

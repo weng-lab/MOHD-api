@@ -68,6 +68,7 @@ const atac_metadata = [
     entity_id: "entA",
     umap_x: "1.0",
     umap_y: "2.0",
+    biospeciman: "bsA"
   },
   {
     sample_id: "SAMPLE_002",
@@ -79,6 +80,7 @@ const atac_metadata = [
     entity_id: "entB",
     umap_x: "3.0",
     umap_y: "4.0",
+    biospeciman: "bsB"
   },
   {
     sample_id: "SAMPLE_003",
@@ -90,6 +92,7 @@ const atac_metadata = [
     entity_id: "entC",
     umap_x: "5.0",
     umap_y: "6.0",
+    biospeciman: "bsC"
   },
   {
     sample_id: "SAMPLE_004",
@@ -101,6 +104,7 @@ const atac_metadata = [
     entity_id: "entD",
     umap_x: "7.0",
     umap_y: "8.0",
+    biospeciman: "bsD"
   },
   {
     sample_id: "SAMPLE_005",
@@ -112,6 +116,7 @@ const atac_metadata = [
     entity_id: "entE",
     umap_x: "9.0",
     umap_y: "10.0",
+    biospeciman: "bsE"
   },
 ];
 

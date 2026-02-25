@@ -111,7 +111,8 @@ export async function atacMetadataResolver() {
       sex,
       entity_id,
       umap_x,
-      umap_y
+      umap_y,
+      biospeciman
     FROM atac_metadata
     ORDER BY sample_id
   `;

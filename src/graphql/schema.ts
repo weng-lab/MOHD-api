@@ -52,6 +52,7 @@ export const schema = buildSchema(`
     entity_id: String!
     umap_x: Float
     umap_y: Float
+    biospeciman: String!
   }
 
   """
