@@ -1,9 +1,9 @@
 import { streamImport } from "./utils";
 import { sql } from "./db";
 
-const rnaFilePath = "https://users.wenglab.org/niship/Phase-0-Metadata.txt";
-const atacFilePath =
-  "https://users.wenglab.org/niship/Phase_0_ATAC_Metadata_with_entity.tsv";
+const rnaFilePath =  process.env.RNA_META_FILE  || "https://users.wenglab.org/niship/Phase-0-Metadata.txt";
+const atacFilePath =  process.env.ATAC_META_FILE  || "https://users.wenglab.org/niship/Phase_0_ATAC_Metadata_with_entity.tsv";
+
 
 const sexMap: Record<string, string> = { "1": "male", "2": "female" };
 

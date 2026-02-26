@@ -6,8 +6,11 @@ export async function streamImport(
   parseLine: (line: string) => Record<string, string>,
 ) {
   console.log(`streaming ${table} from ${url}...`);
-  const response = await fetch(url);
-  const reader = response.body!.getReader();
+  //const response = await fetch(url);
+  //const reader = response.body!.getReader();
+
+  const reader = await getReader(url);
+
   const decoder = new TextDecoder();
 
   let buffer = "";
@@ -49,6 +52,34 @@ export async function streamImport(
 
   console.log(`inserted ${total} ${table} rows`);
 }
+
+async function getReader(source: string) {
+  
+  // HTTP or HTTPS
+  if (source.startsWith("http://") || source.startsWith("https://")) {
+    const response = await fetch(source);
+    if (!response.ok) {
+      throw new Error(`Failed to fetch ${source}: ${response.statusText}`);
+    }
+    return response.body!.getReader();
+  }
+
+  // file:// path
+  if (source.startsWith("file://")) {
+    const path = source.replace("file://", "");
+    const file = Bun.file(path);
+    return file.stream().getReader();
+  }
+
+  // assume local file path
+  const file = Bun.file(source);
+  if (!(await file.exists())) {
+    throw new Error(`Local file not found: ${source}`);
+  }
+
+  return file.stream().getReader();
+}
+
 
 async function insertRows(table: string, rows: Record<string, string>[]) {
   await sql`INSERT INTO ${sql(table)} ${sql(rows)}`;

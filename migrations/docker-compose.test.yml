@@ -1,0 +1,40 @@
+version: "3.9"
+
+services:
+  postgres:
+    image: postgres:15
+    container_name: test-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: testdb
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  importer:
+    build:
+      context: ../importer
+    container_name: test-importer
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgres://postgres:postgres@postgres:5432/testdb
+      RNA_META_FILE: /migrations/test-data/Subset_Phase-0-Metadata.txt
+      ATAC_META_FILE: /migrations/test-data/Subset_Phase_0_ATAC_Metadata_with_entity.tsv
+      RNA_TPM_FILE: /migrations/test-data/Subset_Phase-0_RNA-TPM.tsv
+      ATAC_ZSCORE_FILE: /migrations/test-data/Subset_Phase_0_ATAC_zscores.tsv
+    volumes:
+      - .:/migrations
+    command: >
+      bun run src/index.ts
+      --datatype meta
+      --datatype rna
+      --datatype atac
+      --schema test_schema_v1

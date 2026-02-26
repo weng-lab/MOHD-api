@@ -2,7 +2,7 @@ import { streamImport } from "./utils";
 import { sql } from "./db";
 
 const filePath =
-  "https://users.wenglab.org/niship/Phase_0_ATAC_zscores.tsv";
+  process.env.ATAC_ZSCORE_FILE || "https://users.wenglab.org/niship/Phase_0_ATAC_zscores.tsv";
 
 export async function createATACTables() {
    await sql`
