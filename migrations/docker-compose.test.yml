@@ -33,8 +33,9 @@ services:
     volumes:
       - .:/migrations
     command: >
-      bun run src/index.ts
-      --datatype meta
-      --datatype rna
-      --datatype atac
-      --schema test_schema_v1
+      sh -c "
+      echo 'RUNNING IMPORTER' &&
+      bun run src/index.ts --datatype meta --schema test_schema_v1 &&
+      echo 'RUNNING TESTS' &&
+      bun test
+      "
