@@ -1,0 +1,10 @@
+{
+  "name": "mohd-importer",
+  "scripts": {
+    "start": "bun run src/index.ts",
+    "deploy": "gcloud run jobs deploy importer --source . --region us-east4 --project mohd-485914"
+  },
+  "devDependencies": {
+    "@types/bun": "latest"
+  }
+}

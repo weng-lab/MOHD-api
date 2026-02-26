@@ -1,0 +1,25 @@
+{
+  "name": "mohd-service",
+  "scripts": {
+    "dev": "bun run --hot src/index.ts",
+    "build": "bun build ./src/index.ts --target=bun --outdir=./dist",
+    "start": "bun dist/index.js",
+    "db:start": "docker compose up -d db",
+    "db:stop": "docker compose down",
+    "db:up": "bun test/up.ts",
+    "db:down": "bun test/down.ts",
+    "db:seed": "bun test/seed.ts",
+    "db:reset": "bun test/down.ts && bun test/up.ts && bun test/seed.ts",
+    "deploy:api": "gcloud run deploy mohd-api --source . --region us-east4"
+  },
+  "dependencies": {
+    "@hono/graphql-server": "^0.7.0",
+    "@hono/zod-validator": "^0.7.6",
+    "graphql": "^16.12.0",
+    "hono": "^4.11.8",
+    "zod": "^4.3.6"
+  },
+  "devDependencies": {
+    "@types/bun": "latest"
+  }
+}

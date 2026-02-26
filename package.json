@@ -1,27 +1,19 @@
 {
-  "name": "learn-hono",
+  "name": "mohd-api",
+  "private": true,
+  "workspaces": ["service", "importer"],
   "scripts": {
-    "dev": "bun run --hot src/index.ts",
-    "build": "bun build ./src/index.ts --target=bun --outdir=./dist",
-    "start": "bun dist/index.js",
-    "import": "bun run importer/index.ts",
-    "db:start": "docker compose up -d db",
-    "db:stop": "docker compose down",
-    "db:up": "bun test/up.ts",
-    "db:down": "bun test/down.ts",
-    "db:seed": "bun test/seed.ts",
-    "db:reset": "bun test/down.ts && bun test/up.ts && bun test/seed.ts",
-    "deploy:api": "gcloud run deploy mohd-api --source . --region us-east4",
-    "deploy:importer": "gcloud run jobs deploy importer --source ./importer --region us-east4 --project mohd-485914"
-  },
-  "dependencies": {
-    "@hono/graphql-server": "^0.7.0",
-    "@hono/zod-validator": "^0.7.6",
-    "graphql": "^16.12.0",
-    "hono": "^4.11.8",
-    "zod": "^4.3.6"
-  },
-  "devDependencies": {
-    "@types/bun": "latest"
+    "dev": "bun run --filter mohd-service dev",
+    "build": "bun run --filter mohd-service build",
+    "import": "bun run --filter mohd-importer start",
+    "db:start": "bun run --filter mohd-service db:start",
+    "db:stop": "bun run --filter mohd-service db:stop",
+    "db:up": "bun run --filter mohd-service db:up",
+    "db:down": "bun run --filter mohd-service db:down",
+    "db:seed": "bun run --filter mohd-service db:seed",
+    "db:reset": "bun run --filter mohd-service db:reset",
+    "test": "bun run --filter mohd-service test",
+    "deploy:api": "bun run --filter mohd-service deploy:api",
+    "deploy:importer": "bun run --filter mohd-importer deploy"
   }
 }
