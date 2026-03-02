@@ -12,6 +12,9 @@ until docker exec test-postgres psql -U postgres -d testdb -c "select 1" > /dev/
   sleep 2
 done
 
+docker compose -f docker-compose.test.yml build --no-cache importer
+
+docker compose -f docker-compose.test.yml build --no-cache importer
 # Seed database
 docker compose -f docker-compose.test.yml run --rm importer \
   bun run src/index.ts --datatype meta --datatype atac --datatype rna --schema test_schema_v1
@@ -19,6 +22,6 @@ docker compose -f docker-compose.test.yml run --rm importer \
 # Run tests
 docker compose -f docker-compose.test.yml run --rm --entrypoint "" importer bun test
 
+docker compose -f docker-compose.test.yml build --no-cache service
 
-docker compose -f docker-compose.test.yml run  --rm --entrypoint "" service ls 
 docker compose -f docker-compose.test.yml run --rm --entrypoint "" service bun test 
