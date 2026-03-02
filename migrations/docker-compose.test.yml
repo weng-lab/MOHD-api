@@ -30,6 +30,17 @@ services:
       ATAC_ZSCORE_FILE: /migrations/test-data/Subset_Phase_0_ATAC_zscores.tsv
     volumes:
       - .:/migrations
+  
+  service:
+    build:      
+      context: ../service    
+    working_dir: /usr/src/app
+    container_name: test-service
+    environment:
+      DATABASE_URL: postgres://postgres:postgres@postgres:5432/testdb    
+    depends_on:
+      postgres:
+        condition: service_healthy
     
     
  

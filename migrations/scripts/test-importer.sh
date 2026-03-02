@@ -17,4 +17,8 @@ docker compose -f docker-compose.test.yml run --rm importer \
   bun run src/index.ts --datatype meta --datatype atac --datatype rna --schema test_schema_v1
 
 # Run tests
-docker compose -f docker-compose.test.yml run --rm importer bun test
+docker compose -f docker-compose.test.yml run --rm --entrypoint "" importer bun test
+
+
+docker compose -f docker-compose.test.yml run  --rm --entrypoint "" service ls 
+docker compose -f docker-compose.test.yml run --rm --entrypoint "" service bun test 

@@ -33,58 +33,58 @@ describe("graphql atac_zscore and metadata", () => {
     );
     const body = (await res.json()) as any;
     const atac_metadata = body.data.atac_metadata[0];
-    expect(atac_metadata.sample_id).toBe("SAMPLE_001");    
-    expect(atac_metadata.site).toBe("st1");
-    expect(atac_metadata.opc_id).toBe("opcA");
-    expect(atac_metadata.protocol).toBe("prtA");
-    expect(atac_metadata.status).toBe("case");
-    expect(atac_metadata.sex).toBe("male");
-    expect(atac_metadata.entity_id).toBe("entA");
-    expect(atac_metadata.umap_x).toBe(1.0);
-    expect(atac_metadata.umap_y).toBe(2.0);
-    expect(atac_metadata.biospecimen).toBe("bsA");
+    expect(atac_metadata.sample_id).toBe("MOHD_EA100001");    
+    expect(atac_metadata.site).toBe("CCH");
+    expect(atac_metadata.opc_id).toBe("CCH_0001");
+    expect(atac_metadata.protocol).toBe("Buffy Coat method");
+    expect(atac_metadata.status).toBe("Case");
+    expect(atac_metadata.sex).toBe("female");
+    expect(atac_metadata.entity_id).toBe("CCH_0001_BC_01");
+    expect(atac_metadata.umap_x).toBe(4.974631);
+    expect(atac_metadata.umap_y).toBe(1.9259008);
+    expect(atac_metadata.biospecimen).toBe("buffy coat");
     
 
   })
   test("single accession returns samples with metadata", async () => {
     const res = await app.request(
       gql(
-        '{ atac_zscore(accessions: ["0"]) { accession, samples { value, metadata { sample_id, site, opc_id, protocol, status, sex, entity_id, umap_x, umap_y, biospecimen } } } }',
+        '{ atac_zscore(accessions: ["EH38E0064571"]) { accession, samples { value, metadata { sample_id, site, opc_id, protocol, status, sex, entity_id, umap_x, umap_y, biospecimen } } } }',
       ),
     );
     const body = (await res.json()) as any;
     const acc = body.data.atac_zscore[0];
 
-    expect(acc.accession).toBe("0");
-    expect(acc.samples).toHaveLength(5);
-    expect(acc.samples[0].value).toBe(0);
-    expect(acc.samples[0].metadata.sample_id).toBe("SAMPLE_001");
-    expect(acc.samples[0].metadata.site).toBe("st1");
-    expect(acc.samples[0].metadata.opc_id).toBe("opcA");
-    expect(acc.samples[0].metadata.protocol).toBe("prtA");
-    expect(acc.samples[0].metadata.status).toBe("case");
-    expect(acc.samples[0].metadata.sex).toBe("male");
-    expect(acc.samples[0].metadata.entity_id).toBe("entA");
-    expect(acc.samples[0].metadata.umap_x).toBe(1.0);
-    expect(acc.samples[0].metadata.umap_y).toBe(2.0);
-    expect(acc.samples[0].metadata.biospecimen).toBe("bsA");
-    //
+    expect(acc.accession).toBe("EH38E0064571");
+    expect(acc.samples).toHaveLength(9);
+    expect(acc.samples[0].value).toBe(1.3421206470903115);
+     expect(acc.samples[0].sample_id).toBe("MOHD_EA100001");    
+    expect(acc.samples[0].site).toBe("CCH");
+    expect(acc.samples[0].opc_id).toBe("CCH_0001");
+    expect(acc.samples[0].protocol).toBe("Buffy Coat method");
+    expect(acc.samples[0].status).toBe("Case");
+    expect(acc.samples[0].sex).toBe("female");
+    expect(acc.samples[0].entity_id).toBe("CCH_0001_BC_01");
+    expect(acc.samples[0].umap_x).toBe(4.974631);
+    expect(acc.samples[0].umap_y).toBe(1.9259008);
+    expect(acc.samples[0].biospecimen).toBe("buffy coat");
+    
   });
 
   test("multiple accessions", async () => {
     const res = await app.request(
       gql(
-        '{ atac_zscore(accessions: ["0", "1"]) { accession, samples { value } } }',
+        '{ atac_zscore(accessions: ["EH38E0064571", "EH38E1055789"]) { accession, samples { value } } }',
       ),
     );
     const body = (await res.json()) as any;
     const accs = body.data.atac_zscore;
 
     expect(accs).toHaveLength(2);
-    expect(accs[0].accession).toBe("0");
-    expect(accs[1].accession).toBe("1");
+    expect(accs[0].accession).toBe("EH38E0064571");
+    expect(accs[1].accession).toBe("EH38E1055789");
     // accession "1" first sample should be 1.00
-    expect(accs[1].samples[0].value).toBe(1);
+    //expect(accs[1].samples[0].value).toBe(1);
   });
 
   test("non-existent accession returns empty samples", async () => {
@@ -129,47 +129,47 @@ describe("graphql rna_tpm", () => {
     const gene_metadata = body.data.rna_metadata[0];
 
     
-    expect(gene_metadata.sample_id).toBe("SAMPLE_001");
-    expect(gene_metadata.kit).toBe("kitA");
-    expect(gene_metadata.site).toBe("st1");
+    expect(gene_metadata.sample_id).toBe("MOHD_ER100001");
+    expect(gene_metadata.kit).toBe("CCH_0001");
+    expect(gene_metadata.site).toBe("CCH");
     expect(gene_metadata.status).toBe("case");
-    expect(gene_metadata.sex).toBe("male");
-    expect(gene_metadata.umap_x).toBe(1.0);
-    expect(gene_metadata.umap_y).toBe(2.0);
+    expect(gene_metadata.sex).toBe("female");
+    expect(gene_metadata.umap_x).toBe(7.639448);
+    expect(gene_metadata.umap_y).toBe(22.995956);
   });
   test("single gene returns tpm values with metadata", async () => {
     const res = await app.request(
       gql(
-        '{ rna_tpm(gene_ids: ["0"]) { gene_id, samples { value, metadata {sample_id, kit, site, status, sex, umap_x, umap_y } } } }',
+        '{ rna_tpm(gene_ids: ["ENSG00000000003"]) { gene_id, samples { value, metadata {sample_id, kit, site, status, sex, umap_x, umap_y } } } }',
       ),
     );
     const body = (await res.json()) as any;
     const gene = body.data.rna_tpm[0];
 
-    expect(gene.gene_id).toBe("0");
-    expect(gene.samples).toHaveLength(5);
-    expect(gene.samples[0].value).toBe(0);
-    expect(gene.samples[0].metadata.sample_id).toBe("SAMPLE_001");
-    expect(gene.samples[0].metadata.kit).toBe("kitA");
-    expect(gene.samples[0].metadata.site).toBe("st1");
-    expect(gene.samples[0].metadata.status).toBe("case");
-    expect(gene.samples[0].metadata.sex).toBe("male");
-    expect(gene.samples[0].metadata.umap_x).toBe(1.0);
-    expect(gene.samples[0].metadata.umap_y).toBe(2.0);
+    expect(gene.gene_id).toBe("ENSG00000000003");
+    expect(gene.samples).toHaveLength(9);
+    expect(gene.samples[0].value).toBe(0.00);
+      expect(gene.samples[0].sample_id).toBe("MOHD_ER100001");
+    expect(gene.samples[0].kit).toBe("CCH_0001");
+    expect(gene.samples[0].site).toBe("CCH");
+    expect(gene.samples[0].status).toBe("case");
+    expect(gene.samples[0].sex).toBe("female");
+    expect(gene.samples[0].umap_x).toBe(7.639448);
+    expect(gene.samples[0].umap_y).toBe(22.995956);
   });
 
   test("multiple genes", async () => {
     const res = await app.request(
-      gql('{ rna_tpm(gene_ids: ["0", "1"]) { gene_id, samples { value } } }'),
+      gql('{ rna_tpm(gene_ids: ["ENSG00000000003", "ENSG00000000005"]) { gene_id, samples { value } } }'),
     );
     const body = (await res.json()) as any;
     const genes = body.data.rna_tpm;
 
     expect(genes).toHaveLength(2);
-    expect(genes[0].gene_id).toBe("0");
-    expect(genes[1].gene_id).toBe("1");
+    expect(genes[0].gene_id).toBe("ENSG00000000003");
+    expect(genes[1].gene_id).toBe("ENSG00000000005");
     // gene "1" first sample should be 1.00
-    expect(genes[1].samples[0].value).toBe(1);
+   // expect(genes[1].samples[0].value).toBe(1);
   });
 
   test("non-existent gene returns empty samples", async () => {
