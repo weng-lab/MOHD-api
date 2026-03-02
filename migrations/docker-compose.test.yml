@@ -1,10 +1,8 @@
-version: "3.9"
-
 services:
   postgres:
     image: postgres:15
     container_name: test-postgres
-    restart: unless-stopped
+    restart: "no"    
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
@@ -32,10 +30,6 @@ services:
       ATAC_ZSCORE_FILE: /migrations/test-data/Subset_Phase_0_ATAC_zscores.tsv
     volumes:
       - .:/migrations
-    command: >
-      sh -c "
-      echo 'RUNNING IMPORTER' &&
-      bun run src/index.ts --datatype meta --schema test_schema_v1 &&
-      echo 'RUNNING TESTS' &&
-      bun test
-      "
+    
+    
+ 

@@ -3,4 +3,4 @@ WORKDIR /usr/src/app
 
 COPY . .
 
-CMD [ "bun", "run", "src/index.ts" ]
+ENTRYPOINT [ "bun", "run", "src/index.ts" ]
