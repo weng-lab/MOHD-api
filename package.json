@@ -1,7 +1,10 @@
 {
   "name": "mohd-api",
   "private": true,
-  "workspaces": ["service", "importer"],
+  "workspaces": [
+    "service",
+    "importer"
+  ],
   "scripts": {
     "dev": "bun run --filter mohd-service dev",
     "build": "bun run --filter mohd-service build",
@@ -12,7 +15,7 @@
     "db:down": "bun run --filter mohd-service db:down",
     "db:seed": "bun run --filter mohd-service db:seed",
     "db:reset": "bun run --filter mohd-service db:reset",
-    "test": "bun run --filter mohd-service test",
+    "test": "./migrations/scripts/test-importer.sh",
     "deploy:api": "bun run --filter mohd-service deploy:api",
     "deploy:importer": "bun run --filter mohd-importer deploy"
   }
