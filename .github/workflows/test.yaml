@@ -2,10 +2,10 @@ name: Test
 on:
   push:
     branches:
-      - rework_api_db_tests   # <- replace with your branch
+      - '*'   # <- replace with your branch
   pull_request:
     branches:
-      - [main]   # optional: also run on PRs to this branch
+      - ['main']   # optional: also run on PRs to this branch
 
 jobs:
   test:
