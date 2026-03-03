@@ -15,7 +15,7 @@
     "db:down": "bun run --filter mohd-service db:down",
     "db:seed": "bun run --filter mohd-service db:seed",
     "db:reset": "bun run --filter mohd-service db:reset",
-    "test": "./migrations/scripts/test-importer.sh",
+    "test": "./migrations/scripts/test.sh",
     "deploy:api": "bun run --filter mohd-service deploy:api",
     "deploy:importer": "bun run --filter mohd-importer deploy"
   }
