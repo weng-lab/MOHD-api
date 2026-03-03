@@ -37,11 +37,11 @@ describe("graphql atac_zscore and metadata", () => {
     expect(atac_metadata.site).toBe("CCH");
     expect(atac_metadata.opc_id).toBe("CCH_0001");
     expect(atac_metadata.protocol).toBe("Buffy Coat method");
-    expect(atac_metadata.status).toBe("Case");
+    expect(atac_metadata.status).toBe("case");
     expect(atac_metadata.sex).toBe("female");
     expect(atac_metadata.entity_id).toBe("CCH_0001_BC_01");
     expect(atac_metadata.umap_x).toBe(4.974631);
-    expect(atac_metadata.umap_y).toBe(1.9259008);
+    expect(atac_metadata.umap_y).toBe(1.925901);
     expect(atac_metadata.biospecimen).toBe("buffy coat");
     
 
@@ -57,17 +57,19 @@ describe("graphql atac_zscore and metadata", () => {
 
     expect(acc.accession).toBe("EH38E0064571");
     expect(acc.samples).toHaveLength(9);
-    expect(acc.samples[0].value).toBe(1.3421206470903115);
-     expect(acc.samples[0].sample_id).toBe("MOHD_EA100001");    
-    expect(acc.samples[0].site).toBe("CCH");
-    expect(acc.samples[0].opc_id).toBe("CCH_0001");
-    expect(acc.samples[0].protocol).toBe("Buffy Coat method");
-    expect(acc.samples[0].status).toBe("Case");
-    expect(acc.samples[0].sex).toBe("female");
-    expect(acc.samples[0].entity_id).toBe("CCH_0001_BC_01");
-    expect(acc.samples[0].umap_x).toBe(4.974631);
-    expect(acc.samples[0].umap_y).toBe(1.9259008);
-    expect(acc.samples[0].biospecimen).toBe("buffy coat");
+ 
+    expect(acc.samples[0].value).toBe(1.34);
+    
+    expect(acc.samples[0].metadata.site).toBe("CCH");
+    expect(acc.samples[0].metadata.opc_id).toBe("CCH_0001");
+    expect(acc.samples[0].metadata.protocol).toBe("Buffy Coat method");
+    expect(acc.samples[0].metadata.status).toBe("case");
+    expect(acc.samples[0].metadata.sex).toBe("female");
+    expect(acc.samples[0].metadata.entity_id).toBe("CCH_0001_BC_01");
+    expect(acc.samples[0].metadata.umap_x).toBe(4.974631);
+    expect(acc.samples[0].metadata.umap_y).toBe(1.925901);
+    expect(acc.samples[0].metadata.biospecimen).toBe("buffy coat");
+    expect(acc.samples[0].metadata.sample_id).toBe("MOHD_EA100001");    
     
   });
 
@@ -149,13 +151,13 @@ describe("graphql rna_tpm", () => {
     expect(gene.gene_id).toBe("ENSG00000000003");
     expect(gene.samples).toHaveLength(9);
     expect(gene.samples[0].value).toBe(0.00);
-      expect(gene.samples[0].sample_id).toBe("MOHD_ER100001");
-    expect(gene.samples[0].kit).toBe("CCH_0001");
-    expect(gene.samples[0].site).toBe("CCH");
-    expect(gene.samples[0].status).toBe("case");
-    expect(gene.samples[0].sex).toBe("female");
-    expect(gene.samples[0].umap_x).toBe(7.639448);
-    expect(gene.samples[0].umap_y).toBe(22.995956);
+    expect(gene.samples[0].metadata.sample_id).toBe("MOHD_ER100001");
+    expect(gene.samples[0].metadata.kit).toBe("CCH_0001");
+    expect(gene.samples[0].metadata.site).toBe("CCH");
+    expect(gene.samples[0].metadata.status).toBe("case");
+    expect(gene.samples[0].metadata.sex).toBe("female");
+    expect(gene.samples[0].metadata.umap_x).toBe(7.639448);
+    expect(gene.samples[0].metadata.umap_y).toBe(22.995956);
   });
 
   test("multiple genes", async () => {
