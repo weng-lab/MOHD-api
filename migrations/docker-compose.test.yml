@@ -23,7 +23,7 @@ services:
       postgres:
         condition: service_healthy
     environment:
-      DATABASE_URL: postgres://postgres:postgres@postgres:5432/testdb
+      POSTGRES_URL: postgres://postgres:postgres@postgres:5432/testdb
       RNA_META_FILE: /migrations/test-data/Subset_Phase-0-Metadata.txt
       ATAC_META_FILE: /migrations/test-data/Subset_Phase_0_ATAC_Metadata_with_entity.tsv
       RNA_TPM_FILE: /migrations/test-data/Subset_Phase-0_RNA-TPM.tsv
@@ -37,7 +37,7 @@ services:
     working_dir: /usr/src/app
     container_name: test-service
     environment:
-      DATABASE_URL: postgres://postgres:postgres@postgres:5432/testdb?search_path=test_schema_v1    
+      POSTGRES_URL: postgres://postgres:postgres@postgres:5432/testdb?search_path=test_schema_v1    
     depends_on:
       postgres:
         condition: service_healthy

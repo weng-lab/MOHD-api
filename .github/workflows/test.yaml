@@ -4,32 +4,11 @@ on:
 
   pull_request:
     branches:
-      - main   # optional: also run on PRs to this branch
+      - main
 
 jobs:
   test:
     runs-on: ubuntu-latest
-    services:
-      postgres:
-        image: postgres
-        env:          
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: postgres
-          POSTGRES_DB: testdb
-        ports:
-          - 5432:5432
-        options: >-
-          --health-cmd="pg_isready -U postgres"
-          --health-interval=5s
-          --health-timeout=5s
-          --health-retries=10
-    env:
-      POSTGRES_URL: postgres://postgres:postgres@localhost:5432/testdb?search_path=test_schema_v1    
-      DATABASE_URL: postgres://postgres:postgres@localhost:5432/testdb?search_path=test_schema_v1   
-      RNA_META_FILE: /migrations/test-data/Subset_Phase-0-Metadata.txt
-      ATAC_META_FILE: /migrations/test-data/Subset_Phase_0_ATAC_Metadata_with_entity.tsv
-      RNA_TPM_FILE: /migrations/test-data/Subset_Phase-0_RNA-TPM.tsv
-      ATAC_ZSCORE_FILE: /migrations/test-data/Subset_Phase_0_ATAC_zscores.tsv
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
