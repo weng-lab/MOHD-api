@@ -1,6 +1,6 @@
 import { streamImport } from "./utils";
 import { sql } from "./db";
-const filePath = "https://users.wenglab.org/niship/Phase-0_RNA-TPM.tsv";
+const filePath =  process.env.RNA_TPM_FILE || "https://users.wenglab.org/niship/Phase-0_RNA-TPM.tsv";
 
 export async function createRNATables() {
    await sql`

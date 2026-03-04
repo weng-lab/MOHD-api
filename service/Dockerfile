@@ -16,6 +16,8 @@ RUN bun run build
 
 # release stage
 FROM oven/bun:1 AS release
+WORKDIR /usr/src/app
+COPY --from=build /usr/src/app/. .
 COPY --from=build /usr/src/app/dist/index.js .
 
 # run the api
