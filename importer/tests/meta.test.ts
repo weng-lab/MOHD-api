@@ -134,7 +134,8 @@ describe("Metadata Tables Integration Tests", () => {
     expect(result[0].status).toBe("case");
     expect(result[0].sex).toBe("female");
     expect(result[0].umap_x).toBe("7.639448");
-    expect(result[0].umap_y).toBe("22.995956");    
+    expect(result[0].umap_y).toBe("22.995956");
+    
   });
 
 

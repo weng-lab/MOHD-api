@@ -9,13 +9,11 @@
     "dev": "bun run --filter mohd-service dev",
     "build": "bun run --filter mohd-service build",
     "import": "bun run --filter mohd-importer start",
-    "test": "./migrations/scripts/test.sh",
+    "test:ci": "./migrations/scripts/test.sh",
+    "test:service": "cd service && POSTGRES_URL=\"postgresql://postgres:postgres@localhost:5432/postgres\" bun test",
     "db:start": "bun run --filter mohd-service db:start",
     "db:stop": "bun run --filter mohd-service db:stop",
-    "db:up": "bun run --filter mohd-service db:up",
-    "db:down": "bun run --filter mohd-service db:down",
-    "db:seed": "bun run --filter mohd-service db:seed",
-    "db:reset": "bun run --filter mohd-service db:reset",
+    "db:reset": "./scripts/db-reset.sh",
     "deploy:api": "bun run --filter mohd-service deploy:api",
     "deploy:importer": "bun run --filter mohd-importer deploy"
   }

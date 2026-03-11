@@ -7,10 +7,6 @@
     "test": "bun test",
     "db:start": "docker compose up -d db",
     "db:stop": "docker compose down",
-    "db:up": "bun test/up.ts",
-    "db:down": "bun test/down.ts",
-    "db:seed": "bun test/seed.ts",
-    "db:reset": "bun test/down.ts && bun test/up.ts && bun test/seed.ts",
     "deploy:api": "gcloud run deploy mohd-api --source . --region us-east4"
   },
   "dependencies": {
