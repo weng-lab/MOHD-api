@@ -241,7 +241,7 @@ export async function fetchDownloadFilesResolver( args: { ome: string; sample_id
       let query = sql`
         SELECT sample_id, filename, file_type, size, file_ome, open_access
         FROM mohd_download_files
-        WHERE file_ome = ${dbOmeValue}::ome
+        WHERE file_ome = ${dbOmeValue}
       `;
       
       if (sample_id && sample_id.length > 0) {
