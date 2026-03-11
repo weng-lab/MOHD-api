@@ -226,23 +226,24 @@ export async function metabolomicsMetadataResolver() {
 
 }
 
-export async function fetchDownloadFilesResolver( args: { ome: string[]; sample_id?: string[] }) {
+export async function fetchDownloadFilesResolver( args: { ome: string; sample_id?: string[] }) {
       const { ome, sample_id } = args;
-      if (!ome || ome.length === 0) {
-        throw new Error("Argument 'ome' is required and must have at least one value");
+      if (!ome) {
+        throw new Error("Argument 'ome' is required");
       }
 
-      // Convert GraphQL enum values to DB strings
-      const dbOmeValues = ome.map((o) => {
-        const val = omeEnumToDb[o];
-        if (!val) throw new Error(`Invalid ome enum value: ${o}`);
-        return val;
-      });
-
+      // Convert GraphQL enum value to DB string
+      const dbOmeValue = omeEnumToDb[ome];
+      if (!dbOmeValue) {
+        throw new Error(`Invalid ome enum value: ${ome}`);
+      }
       // Base query
-      let query = sql`SELECT sample_id, filename, file_type, size, file_ome, open_access 
-                       FROM mohd_download_files 
-                       WHERE file_ome = ANY(${sql.array(dbOmeValues, 'ome')})`;
+      let query = sql`
+        SELECT sample_id, filename, file_type, size, file_ome, open_access
+        FROM mohd_download_files
+        WHERE file_ome = ${dbOmeValue}::ome
+      `;
+      
       if (sample_id && sample_id.length > 0) {
         query = sql`${query} AND sample_id = ANY(${sql.array(sample_id, 'varchar')})`;
       }
