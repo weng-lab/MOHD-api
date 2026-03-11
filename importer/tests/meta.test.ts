@@ -46,6 +46,35 @@ describe("Metadata Tables Integration Tests", () => {
     expect(result.length).toBe(1);
   });
 
+    test("wgs_metadata table exists", async () => {
+    const result = await sql`
+      SELECT table_name
+      FROM information_schema.tables
+      WHERE table_schema = ${schema}
+        AND table_name = 'wgs_metadata'
+    `;
+    expect(result.length).toBe(1);
+  });
+
+   test("WGS Metadata was inserted", async () => {
+    const count = await sql`
+      SELECT COUNT(*)::int AS total
+      FROM ${sql(schema)}.wgs_metadata
+    `;
+    expect(count[0].total).toBeGreaterThan(0);
+  });
+
+  test("First WGS sample_id is correct when ordered", async () => {
+    const result = await sql`
+      SELECT *
+      FROM ${sql(schema)}.wgs_metadata ORDER BY sample_id LIMIT 1
+    `;        
+    expect(result[0].sample_id).toBe("MOHD_EG100001");
+    expect(result[0].kit).toBe("CCH_0001");
+    expect(result[0].site).toBe("CCH");
+    expect(result[0].status).toBe("case");
+    expect(result[0].sex).toBe("female"); 
+  });
 
 
   test("RNA Metadata was inserted", async () => {
@@ -105,8 +134,7 @@ describe("Metadata Tables Integration Tests", () => {
     expect(result[0].status).toBe("case");
     expect(result[0].sex).toBe("female");
     expect(result[0].umap_x).toBe("7.639448");
-    expect(result[0].umap_y).toBe("22.995956");
-    
+    expect(result[0].umap_y).toBe("22.995956");    
   });
 
 

@@ -28,6 +28,8 @@ services:
       ATAC_META_FILE: /migrations/test-data/Subset_Phase_0_ATAC_Metadata_with_entity.tsv
       RNA_TPM_FILE: /migrations/test-data/Subset_Phase-0_RNA-TPM.tsv
       ATAC_ZSCORE_FILE: /migrations/test-data/Subset_Phase_0_ATAC_zscores.tsv
+      WGS_META_FILE: /migrations/test-data/WGS-Phase-0-Metadata.txt
+      DOWNLOAD_FILES: /migrations/test-data/Subset_mohd_phase_0_all_files.tsv
     volumes:
       - .:/migrations
   
