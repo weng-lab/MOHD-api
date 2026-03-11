@@ -223,7 +223,7 @@ describe("graphql download files", () => {
     test("fetch download files", async () => {
     const res = await app.request(
       gql(
-        '{ fetch_download_files(ome: [ATAC_SEQ], sample_id: ["MOHD_EA100001"]) { sample_id, filename, file_type, size, file_ome, open_access  } }',
+        '{ fetch_download_files(ome: ATAC_SEQ, sample_id: ["MOHD_EA100001"]) { sample_id, filename, file_type, size, file_ome, open_access  } }',
       ),
     );
     const body = (await res.json()) as any;    

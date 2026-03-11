@@ -151,7 +151,7 @@ export const schema = buildSchema(`
     lipidomics_metadata:  [LipidomicsSampleMetadata!]!
     metabolomics_metadata:  [MetabolomicsSampleMetadata!]!
 
-    fetch_download_files(ome: [OmeEnum!]!, sample_id: [String]) : [OmeDownloadFiles]
+    fetch_download_files(ome: OmeEnum!, sample_id: [String]) : [OmeDownloadFiles]
 
   }
 `);
