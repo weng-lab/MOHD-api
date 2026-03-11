@@ -228,8 +228,6 @@ export async function metabolomicsMetadataResolver() {
 
 export async function fetchDownloadFilesResolver( args: { ome: string[]; sample_id?: string[] }) {
       const { ome, sample_id } = args;
-        
-      console.log("args:", args);
       if (!ome || ome.length === 0) {
         throw new Error("Argument 'ome' is required and must have at least one value");
       }

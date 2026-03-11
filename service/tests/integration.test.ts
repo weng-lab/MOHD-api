@@ -170,8 +170,6 @@ describe("graphql rna_tpm", () => {
     expect(genes).toHaveLength(2);
     expect(genes[0].gene_id).toBe("ENSG00000000003");
     expect(genes[1].gene_id).toBe("ENSG00000000005");
-    // gene "1" first sample should be 1.00
-   // expect(genes[1].samples[0].value).toBe(1);
   });
 
   test("non-existent gene returns empty samples", async () => {
