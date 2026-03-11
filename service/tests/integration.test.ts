@@ -170,8 +170,6 @@ describe("graphql rna_tpm", () => {
     expect(genes).toHaveLength(2);
     expect(genes[0].gene_id).toBe("ENSG00000000003");
     expect(genes[1].gene_id).toBe("ENSG00000000005");
-    // gene "1" first sample should be 1.00
-   // expect(genes[1].samples[0].value).toBe(1);
   });
 
   test("non-existent gene returns empty samples", async () => {
@@ -201,4 +199,41 @@ describe("graphql rna_tpm", () => {
     expect(body.errors).toBeDefined();
     expect(body.errors.length).toBeGreaterThan(0);
   });
+});
+
+describe("graphql wgs metadata", () => {
+    test("fetch wgs metadata", async () => {
+    const res = await app.request(
+      gql(
+        '{ wgs_metadata { sample_id, kit, site, status, sex  } }',
+      ),
+    );
+    const body = (await res.json()) as any;
+    const wgs_metadata = body.data.wgs_metadata[0];    
+    expect(wgs_metadata.sample_id).toBe("MOHD_EG100001");
+    expect(wgs_metadata.kit).toBe("CCH_0001");
+    expect(wgs_metadata.site).toBe("CCH");
+    expect(wgs_metadata.status).toBe("case");
+    expect(wgs_metadata.sex).toBe("female");
+  });  
+});
+
+
+describe("graphql download files", () => {
+    test("fetch download files", async () => {
+    const res = await app.request(
+      gql(
+        '{ fetch_download_files(ome: [ATAC_SEQ], sample_id: ["MOHD_EA100001"]) { sample_id, filename, file_type, size, file_ome, open_access  } }',
+      ),
+    );
+    const body = (await res.json()) as any;    
+    const download_files = body.data.fetch_download_files[0];    
+    expect(download_files.sample_id).toBe("MOHD_EA100001");
+    expect(download_files.filename).toBe("MOHD_EA100001_R1.fastq.gz");
+    expect(download_files.file_type).toBe("Sequenced reads");
+    expect(download_files.size).toBe("1428076625");
+    expect(download_files.open_access).toBe(false);   
+    
+    expect(body.data.fetch_download_files.length).toBe(8);    
+  });  
 });

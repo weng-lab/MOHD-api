@@ -2,6 +2,21 @@ import type { RootResolver } from "@hono/graphql-server";
 import { sql } from "../db";
 import z from "zod";
 
+const omeEnumToDb: Record<string, string> = {
+  ATAC_SEQ: "ATAC-seq",
+  EXPOSOMICS: "Exposomics",
+  LIPIDOMICS: "Lipidomics",
+  METABOLOMICS: "Metabolomics",
+  PROTEOMICS: "Proteomics",
+  RNA_SEQ: "RNA-seq",
+  WGBS: "WGBS",
+  WGS: "WGS",
+};
+// Reverse mapping for returning GraphQL enum values
+const dbToOmeEnum: Record<string, string> = Object.fromEntries(
+  Object.entries(omeEnumToDb).map(([k, v]) => [v, k])
+);
+
 const rnaQuery = z.object({
   gene_ids: z.array(z.string()),
 });
@@ -120,11 +135,145 @@ export async function atacMetadataResolver() {
   return rows;
 }
 
+export async function wgsMetadataResolver() {
+   const rows = await sql`
+    SELECT
+      sample_id,
+      kit,
+      site,
+      status,
+      sex
+    FROM wgs_metadata
+    ORDER BY sample_id
+  `;
+
+  return rows;
+
+}
+export async function wgbsMetadataResolver() {
+   const rows = await sql`
+    SELECT
+      sample_id,
+      kit,
+      site,
+      status,
+      sex
+    FROM wgbs_metadata
+    ORDER BY sample_id
+  `;
+
+  return rows;
+
+}
+export async function exposomicsMetadataResolver() {
+   const rows = await sql`
+    SELECT
+      sample_id,
+      kit,
+      site,
+      status,
+      sex
+    FROM exposomics_metadata
+    ORDER BY sample_id
+  `;
+
+  return rows;
+
+}
+export async function proteomicsMetadataResolver() {
+   const rows = await sql`
+    SELECT
+      sample_id,
+      kit,
+      site,
+      status,
+      sex
+    FROM proteomics_metadata
+    ORDER BY sample_id
+  `;
+
+  return rows;
+
+}
+export async function lipidomicsMetadataResolver() {
+   const rows = await sql`
+    SELECT
+      sample_id,
+      kit,
+      site,
+      status,
+      sex
+    FROM lipidomics_metadata
+    ORDER BY sample_id
+  `;
+
+  return rows;
+
+}
+export async function metabolomicsMetadataResolver() {
+   const rows = await sql`
+    SELECT
+      sample_id,
+      kit,
+      site,
+      status,
+      sex
+    FROM metabolomics_metadata
+    ORDER BY sample_id
+  `;
+
+  return rows;
+
+}
+
+export async function fetchDownloadFilesResolver( args: { ome: string[]; sample_id?: string[] }) {
+      const { ome, sample_id } = args;
+      if (!ome || ome.length === 0) {
+        throw new Error("Argument 'ome' is required and must have at least one value");
+      }
+
+      // Convert GraphQL enum values to DB strings
+      const dbOmeValues = ome.map((o) => {
+        const val = omeEnumToDb[o];
+        if (!val) throw new Error(`Invalid ome enum value: ${o}`);
+        return val;
+      });
+
+      // Base query
+      let query = sql`SELECT sample_id, filename, file_type, size, file_ome, open_access 
+                       FROM mohd_download_files 
+                       WHERE file_ome = ANY(${sql.array(dbOmeValues, 'ome')})`;
+      if (sample_id && sample_id.length > 0) {
+        query = sql`${query} AND sample_id = ANY(${sql.array(sample_id, 'varchar')})`;
+      }
+
+      // Execute query
+      const rows = await query;
+
+      // Return results with GraphQL enum values
+      return rows.map((row: any) => ({
+        sample_id: row.sample_id,
+        filename: row.filename,
+        file_type: row.file_type,
+        size: row.size,
+        file_ome: dbToOmeEnum[row.file_ome] || row.file_ome,
+        open_access: row.open_access,
+      }));                       
+
+  
+}
 export const rootResolver: RootResolver = () => {
   return {
     rna_tpm: rnaResolver,
     atac_zscore: atacResolver,
     rna_metadata: rnaMetadataResolver,
-    atac_metadata: atacMetadataResolver
+    atac_metadata: atacMetadataResolver,
+    wgs_metadata: wgsMetadataResolver,
+    wgbs_metadata: wgbsMetadataResolver,
+    exposomics_metadata: exposomicsMetadataResolver,
+    proteomics_metadata: proteomicsMetadataResolver,
+    lipidomics_metadata: lipidomicsMetadataResolver,
+    metabolomics_metadata: metabolomicsMetadataResolver,
+    fetch_download_files: fetchDownloadFilesResolver
   };
 };

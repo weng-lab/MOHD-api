@@ -1,0 +1,20 @@
+dataset	filename	file_type	size	ome	open_access
+MOHD_EA100001	MOHD_EA100001_R1.fastq.gz	Sequenced reads	1428076625	ATAC-seq	False
+MOHD_EA100001	MOHD_EA100001_filtered_GRCh38_v0.bam	Aligned reads	2802466160	ATAC-seq	False
+MOHD_EA100001	MOHD_EA100001_R2.fastq.gz	Sequenced reads	1471026298	ATAC-seq	False
+MOHD_EA100001	MOHD_EA100001_signal-pvalue_GRCh38_v0.bigWig	p-value signal	495882076	ATAC-seq	True
+MOHD_EA100001	MOHD_EA100001_unfiltered_GRCh38_v0.bam	Aligned reads	4595615006	ATAC-seq	False
+MOHD_EA100001	MOHD_EA100001_peaks-FDR5_GRCh38_v0.bed.gz	FDR 0.05 peaks	1604321	ATAC-seq	True
+MOHD_EA100001	MOHD_EA100001_peaks-pseudorep_GRCh38_v0.bed.gz	Pseudorep peaks	905390	ATAC-seq	True
+MOHD_EA100001	MOHD_EA100001_signal-FC_GRCh38_v0.bigWig	Fold change signal	641382481	ATAC-seq	True
+MOHD_EA100002	MOHD_EA100002_peaks-pseudorep_GRCh38_v0.bed.gz	Pseudorep peaks	1205862	ATAC-seq	True
+MOHD_EA100002	MOHD_EA100002_peaks-FDR5_GRCh38_v0.bed.gz	FDR 0.05 peaks	2799697	ATAC-seq	True
+MOHD_EA100002	MOHD_EA100002_signal-FC_GRCh38_v0.bigWig	Fold change signal	847396208	ATAC-seq	True
+MOHD_EA100002	MOHD_EA100002_R2.fastq.gz	Sequenced reads	1868310773	ATAC-seq	False
+MOHD_EA100002	MOHD_EA100002_unfiltered_GRCh38_v0.bam	Aligned reads	6152540651	ATAC-seq	False
+MOHD_EA100002	MOHD_EA100002_signal-pvalue_GRCh38_v0.bigWig	p-value signal	631190323	ATAC-seq	True
+MOHD_EA100002	MOHD_EA100002_filtered_GRCh38_v0.bam	Aligned reads	3478923509	ATAC-seq	False
+MOHD_EA100002	MOHD_EA100002_R1.fastq.gz	Sequenced reads	1889785610	ATAC-seq	False
+MOHD_EA100003	MOHD_EA100003_signal-pvalue_GRCh38_v0.bigWig	p-value signal	560411443	ATAC-seq	True
+MOHD_EA100003	MOHD_EA100003_R1.fastq.gz	Sequenced reads	1599875317	ATAC-seq	False
+MOHD_EA100003	MOHD_EA100003_unfiltered_GRCh38_v0.bam	Aligned reads	5239860101	ATAC-seq	False

@@ -21,6 +21,7 @@ docker compose -f docker-compose.test.yml run --rm importer \
     --datatype meta \
     --datatype atac \
     --datatype rna \
+    --datatype downloadfiles \
     --schema test_schema_v1
 
 # Run importer tests

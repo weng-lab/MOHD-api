@@ -2,6 +2,7 @@ import { sql } from "./db";
 import { importAtac, createATACTables } from "./atac";
 import { importMeta, createMetaTables } from "./meta";
 import { importRna, createRNATables } from "./rna";
+import { createDownloadFilesTables, importDownloadFiles } from "./downloadfiles";
 
 const dataTypes: string[] = [];
 let schema: string | undefined;
@@ -17,7 +18,7 @@ process.argv.forEach((arg, i, args) => {
 });
 
 if (dataTypes.length === 0) {
-  console.error("At least one --datatype is required (rna, atac, meta)");
+  console.error("At least one --datatype is required (rna, atac, meta, downloadfiles)");
   process.exit(1);
 }
 
@@ -56,6 +57,12 @@ for (const type of dataTypes) {
       console.log("Running Meta import...");
       await importMeta();
       console.log("Finished Metadata import...");
+      break;
+    case "downloadfiles":
+      await createDownloadFilesTables();
+      console.log("Done creating DownloadFiles tables");
+      await importDownloadFiles();
+      console.log("Finished DownloadFiles import...");
       break;
     default:
       console.error(`Unknown data type: ${type}`);
